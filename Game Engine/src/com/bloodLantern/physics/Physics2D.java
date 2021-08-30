@@ -1,7 +1,5 @@
 package com.bloodLantern.physics;
 
-import static java.awt.geom.Line2D.linesIntersect;
-
 import java.util.ArrayList;
 
 import com.bloodLantern.annotations.NotNull;
@@ -32,7 +30,7 @@ public final class Physics2D {
 	/**
 	 * This method is used to calculate the momentum of a {@link Physic2D} object.
 	 */
-	public static void calcMomentum(Physic2D object) {
+	public static void calcMomentum(Physic2D object, Renderer renderer) {
 		object.setXBefore(object.getX());
 		object.setYBefore(object.getY());
 
@@ -43,6 +41,9 @@ public final class Physics2D {
 
 		if (object.isAffectedByGravity())
 			object.addMomentum(0, Math.abs(GRAVITY * object.getVY()) + 0.5);
+
+		calcCollisions(object, renderer);
+
 	}
 
 	/**
@@ -67,10 +68,10 @@ public final class Physics2D {
 				CollisionBox otherBox = other.getCollisionBox();
 				CollisionBox objectBox = object.getCollisionBox();
 				// Big check for collision
-				if ((object.getX() + objectBox.getX() + objectBox.getWidth() >= other.getX() + otherBox.getX())
-						&& (object.getX() + objectBox.getX() <= other.getX() + otherBox.getX() + otherBox.getWidth())
-						&& (object.getY() + objectBox.getY() + objectBox.getHeight() >= other.getY() + otherBox.getY())
-						&& (object.getY() + objectBox.getY() <= other.getY() + otherBox.getY() + otherBox.getHeight()))
+				if ((object.getX() + objectBox.getX() + objectBox.getWidth() > other.getX() + otherBox.getX())
+						&& (object.getX() + objectBox.getX() < other.getX() + otherBox.getX() + otherBox.getWidth())
+						&& (object.getY() + objectBox.getY() + objectBox.getHeight() > other.getY() + otherBox.getY())
+						&& (object.getY() + objectBox.getY() < other.getY() + otherBox.getY() + otherBox.getHeight()))
 					// Add to the list if it collides and if it isn't already in
 					if (!list.contains(other))
 						list.add(other);
@@ -90,20 +91,20 @@ public final class Physics2D {
 		// If the list isn't empty then it hit something
 		if (list.size() != 0) {
 			CollisionBox objectCb = object.getCollisionBox();
-			double xb = 0;
-			double yb = 0;
-			double x = 0;
-			double y = 0;
 			double otherCenterX = 0;
 			double otherCenterY = 0;
 			double objectCenterX = object.getX() + (objectCb.getX() + objectCb.getWidth() / 2);
 			double objectCenterY = object.getY() + (objectCb.getY() + objectCb.getHeight() / 2);
+			double objectVX = object.getVX();
+			double objectVY = object.getVY();
 
 			// Check to find what side have been hit
 			for (Physic2D other : list) {
 				CollisionBox otherCb = other.getCollisionBox();
 				otherCenterX = other.getX() + (otherCb.getX() + otherCb.getWidth()) / 2;
 				otherCenterY = other.getY() + (otherCb.getY() + otherCb.getHeight()) / 2;
+				double otherVX = other.getVX();
+				double otherVY = other.getVY();
 
 				// Doesn't collide if set to trigger
 				if (!otherCb.isTrigger() && !objectCb.isTrigger()) {
@@ -124,29 +125,68 @@ public final class Physics2D {
 					if (depthX != 0 && depthY != 0) {
 						if (Math.abs(depthX) < Math.abs(depthY)) {
 							// Collision along the X axis. React accordingly
-							object.setX(object.getX() - depthX);
+							
+							if (depthX > 0) {
+								object.setX(object.getX() - depthX - 1);
+								// Bounciness
+								object.setVX((objectVX - (Math.abs(objectVX - otherVX) * getWeightRatio(other, object)))
+										* object.getBouciness() * other.getBouciness());
+								other.setVX((otherVX - (Math.abs(otherVX - objectVX) * getWeightRatio(object, other)))
+										* other.getBouciness() * object.getBouciness());
+								// Friction
+								object.setVY(object.getVY()
+										- object.getVY() * object.getFriction() * other.getFriction() / 10);
+							} else {
+								object.setX(object.getX() - depthX - 1);
+								// Bounciness
+								object.setVX((objectVX - (Math.abs(objectVX - otherVX) * getWeightRatio(other, object)))
+										* object.getBouciness() * other.getBouciness());
+								other.setVX((otherVX - (Math.abs(otherVX - objectVX) * getWeightRatio(object, other)))
+										* other.getBouciness() * object.getBouciness());
+								// Friction
+								object.setVY(object.getVY()
+										- object.getVY() * object.getFriction() * other.getFriction() / 10);
+							}
 						} else {
+							if (depthY > 0) {
+								object.setY(object.getY() - depthY);
+								// Bounciness
+								object.setVY(objectVY - ((objectVY - otherVY) * object.getBouciness()
+										* other.getBouciness() * getWeightRatio(other, object)));
+								other.setVY(otherVY - ((otherVY - objectVY) * other.getBouciness()
+										* object.getBouciness() * getWeightRatio(object, other)));
+								// Friction
+								object.setVX(object.getVX()
+										- object.getVX() * object.getFriction() * other.getFriction() / 10);
+							} else {
+								object.setY(object.getY() - depthY);
+								// Bounciness
+								object.setVY(objectVY - ((objectVY + otherVY) * object.getBouciness()
+										* other.getBouciness() * getWeightRatio(other, object)));
+								other.setVY(otherVY - ((otherVY + objectVY) * other.getBouciness()
+										* object.getBouciness() * getWeightRatio(object, other)));
+								// Friction
+								object.setVX(object.getVX()
+										- object.getVX() * object.getFriction() * other.getFriction() / 10);
+							}
 							// Collision along the Y axis.
-							object.setY(object.getY() - depthY);
+
 						}
-					}
-					if ((linesIntersect(x, y, xb, yb, other.getX() + otherCb.getX(), other.getY() + otherCb.getY(),
-							other.getX() + otherCb.getX() + otherCb.getWidth(), other.getY() + otherCb.getY()))
-							|| (linesIntersect(x, y, xb, yb, other.getX() + otherCb.getX(),
-									other.getY() + otherCb.getY() + otherCb.getHeight(),
-									other.getX() + otherCb.getX() + otherCb.getWidth(),
-									other.getY() + otherCb.getY() + otherCb.getHeight()))) {
-						object.setVY(-object.getVY() * object.getBouciness() * other.getBouciness());
-						object.setY(object.getYBefore());
-						object.setVX(object.getVX() - object.getVX() * object.getFriction() * other.getFriction() / 10);
-					} else {
-						object.setVX(-object.getVX() * object.getBouciness() * other.getBouciness());
-						object.setX(object.getXBefore());
-						object.setVY(object.getVY() - object.getVY() * object.getFriction() * other.getFriction() / 10);
 					}
 				}
 			}
 		}
+	}
+
+	/**
+	 * 
+	 * @param object1
+	 * @param object2
+	 * @return the ratio of {@code object1.getWeight()} and
+	 *         {@code object2.getWeight()}
+	 */
+	private static double getWeightRatio(Physic2D object1, Physic2D object2) {
+		return object1.getWeight() / object2.getWeight();
 	}
 
 }

@@ -44,10 +44,11 @@ final class Tester {
 				renderable5 = null*/, renderable6 = null;
 		try {
 			Texture texture = new Texture(new File("Image.png"));
-			renderable = new ComponentTester(texture, 50, 100, 0, 0, false, 1.0f, 0.3f, 1.0f,
+			Texture texture2 = new Texture(new File("Image2.png"));
+			renderable = new ComponentTester(texture, 50, 100, 0, 0, false, 0.5f, 0.3f, 2.0f,
 					new CollisionBox(0, 0, texture, false));
-			renderable6 = new ComponentTester(texture, 500, 100, 0, 0, false, 1.0f, 0.3f, 1.0f,
-					new CollisionBox(0, 0, texture, false));
+			renderable6 = new ComponentTester(texture2, 500, 100, 0, 0, false, 1.0f, 0.3f, 1.0f,
+					new CollisionBox(0, 0, texture2, false));
 			/*renderable2 = new ComponentTester(new Texture(new File("Sol.png")), 50, 0, 0, 0, false, 1.0f, 0.3f,
 					new CollisionBox(0, 0, 900, 90, false));
 			renderable3 = new ComponentTester(new Texture(new File("Sol.png")), 50, 600, 0, 0, false, 1.0f, 0.3f,
@@ -60,20 +61,20 @@ final class Tester {
 			e.printStackTrace();
 		}
 		renderer.render(renderable);
+		renderer.render(renderable6);
+		renderable.addMomentum(100, 0);
+		renderable6.addMomentum(-100, 0);
 		while (true) {
 
 			/*renderer.render(renderable2);
 			renderer.render(renderable3);
 			renderer.render(renderable4);
 			renderer.render(renderable5);*/
-			renderer.render(renderable6);
 
-			renderable.addMomentum(100, 0);
-			renderable6.addMomentum(-100, 0);
 
 			synchronized (renderable) {
-				while (renderable.getVX() > 1 || renderable.getVY() > 1 || renderable.getVX() < -1
-						|| renderable.getVY() < -1) {
+				while (/*renderable.getVX() > 1 || renderable.getVY() > 1 || renderable.getVX() < -1
+						|| renderable.getVY() < -1*/ true) {
 					try {
 						renderable.wait(Renderer.FRAME_RATE);
 					} catch (InterruptedException e) {
@@ -83,22 +84,19 @@ final class Tester {
 					// Calculates momentum for each Physic object
 					for (Renderable2D c : renderer.getRendering())
 						if (c instanceof Physic2D)
-							Physics2D.calcMomentum((Physic2D) c);
-					// Calculates collisions for each Physic object
-					for (Renderable2D c : renderer.getRendering())
-						if (c instanceof Physic2D)
-							Physics2D.calcCollisions((Physic2D) c, renderer);
+							Physics2D.calcMomentum((Physic2D) c, renderer);
 
 					// Refreshes rendering
 					renderer.refreshRendering(renderable);
 					renderer.refreshRendering(renderable6);
 				}
 			}
+			/*
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			}
+			}*/
 		}
 
 	}
