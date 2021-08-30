@@ -75,6 +75,7 @@ public final class Physics2D {
 					// Add to the list if it collides and if it isn't already in
 					if (!list.contains(other))
 						list.add(other);
+
 			}
 		return list;
 	}
@@ -105,6 +106,8 @@ public final class Physics2D {
 				otherCenterY = other.getY() + (otherCb.getY() + otherCb.getHeight()) / 2;
 				double otherVX = other.getVX();
 				double otherVY = other.getVY();
+				double energyX = (Math.abs(objectVX) + Math.abs(otherVX));
+				double energyY = (Math.abs(objectVY) + Math.abs(otherVY));
 
 				// Doesn't collide if set to trigger
 				if (!otherCb.isTrigger() && !objectCb.isTrigger()) {
@@ -125,24 +128,29 @@ public final class Physics2D {
 					if (depthX != 0 && depthY != 0) {
 						if (Math.abs(depthX) < Math.abs(depthY)) {
 							// Collision along the X axis. React accordingly
-							
+
 							if (depthX > 0) {
-								object.setX(object.getX() - depthX - 1);
+								object.setX(object.getX() + depthX + 1);
 								// Bounciness
-								object.setVX((objectVX - (Math.abs(objectVX - otherVX) * getWeightRatio(other, object)))
+								object.setVX((objectVX
+										- (objectVX / Math.abs(objectVX)) * energyX * getWeightRatio(other, object))
 										* object.getBouciness() * other.getBouciness());
-								other.setVX((otherVX - (Math.abs(otherVX - objectVX) * getWeightRatio(object, other)))
-										* other.getBouciness() * object.getBouciness());
+								other.setVX((otherVX
+										- (otherVX / Math.abs(otherVX)) * energyX * getWeightRatio(object, other))
+										* object.getBouciness() * other.getBouciness());
 								// Friction
 								object.setVY(object.getVY()
 										- object.getVY() * object.getFriction() * other.getFriction() / 10);
+
 							} else {
-								object.setX(object.getX() - depthX - 1);
+								object.setX(object.getX() + depthX - 1);
 								// Bounciness
-								object.setVX((objectVX - (Math.abs(objectVX - otherVX) * getWeightRatio(other, object)))
+								object.setVX((objectVX
+										- (objectVX / Math.abs(objectVX)) * energyX * getWeightRatio(other, object))
 										* object.getBouciness() * other.getBouciness());
-								other.setVX((otherVX - (Math.abs(otherVX - objectVX) * getWeightRatio(object, other)))
-										* other.getBouciness() * object.getBouciness());
+								other.setVX((otherVX
+										- (otherVX / Math.abs(otherVX)) * energyX * getWeightRatio(object, other))
+										* object.getBouciness() * other.getBouciness());
 								// Friction
 								object.setVY(object.getVY()
 										- object.getVY() * object.getFriction() * other.getFriction() / 10);

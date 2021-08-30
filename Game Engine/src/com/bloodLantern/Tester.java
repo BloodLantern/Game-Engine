@@ -45,7 +45,7 @@ final class Tester {
 		try {
 			Texture texture = new Texture(new File("Image.png"));
 			Texture texture2 = new Texture(new File("Image2.png"));
-			renderable = new ComponentTester(texture, 50, 100, 0, 0, false, 0.5f, 0.3f, 2.0f,
+			renderable = new ComponentTester(texture, 50, 100, 0, 0, false, 0.5f, 0.3f, 1.0f,
 					new CollisionBox(0, 0, texture, false));
 			renderable6 = new ComponentTester(texture2, 500, 100, 0, 0, false, 1.0f, 0.3f, 1.0f,
 					new CollisionBox(0, 0, texture2, false));
@@ -62,8 +62,8 @@ final class Tester {
 		}
 		renderer.render(renderable);
 		renderer.render(renderable6);
-		renderable.addMomentum(100, 0);
-		renderable6.addMomentum(-100, 0);
+		renderable.addMomentum(200, 0);
+		renderable6.addMomentum(00, 0);
 		while (true) {
 
 			/*renderer.render(renderable2);
