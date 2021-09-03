@@ -28,7 +28,7 @@ public class Renderer extends JPanel implements Runnable {
 	/**
 	 * The frame rate of the screen used to display the application.
 	 */
-	public static final int FRAME_RATE = Math.round(1000 / 60);
+	public static final int FRAME_RATE = 60;
 	/**
 	 * List containing every Renderable2D object currently rendered by this Renderer
 	 * object.

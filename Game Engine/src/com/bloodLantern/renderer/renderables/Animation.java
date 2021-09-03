@@ -14,8 +14,6 @@ public class Animation implements Renderable2D {
 	private final Texture[] textures;
 	private double x = 0;
 	private double y = 0;
-	private double xBefore = 0;
-	private double yBefore = 0;
 	private int roundedX = 0;
 	private int roundedY = 0;
 
@@ -54,26 +52,6 @@ public class Animation implements Renderable2D {
 	@Override
 	public void setY(double y) {
 		this.y = y;
-	}
-
-	@Override
-	public double getXBefore() {
-		return xBefore;
-	}
-
-	@Override
-	public void setXBefore(double xBefore) {
-		this.xBefore = xBefore;
-	}
-
-	@Override
-	public double getYBefore() {
-		return yBefore;
-	}
-
-	@Override
-	public void setYBefore(double yBefore) {
-		this.yBefore = yBefore;
 	}
 
 	@Override

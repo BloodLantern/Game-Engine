@@ -40,43 +40,52 @@ final class Tester {
 		// EventQueue.invokeLater((Runnable) renderer);
 		renderer.setBackground(Color.BLACK);
 
-		ComponentTester renderable = null/*, renderable2 = null, renderable3 = null, renderable4 = null,
-				renderable5 = null*/, renderable6 = null;
+		ComponentTester renderable = null
+		/*
+		 * , renderable2 = null, renderable4 = null, renderable5 =
+		 * null
+		 */, renderable3 = null, renderable6 = null;
 		try {
 			Texture texture = new Texture(new File("Image.png"));
 			Texture texture2 = new Texture(new File("Image2.png"));
-			renderable = new ComponentTester(texture, 50, 100, 0, 0, false, 0.5f, 0.3f, 1.0f,
+			renderable = new ComponentTester(texture, 50, 100, 0, 0, true, true, 0.5f, 0.3f, 10.0f, 2500.0f, 2500.0f,
 					new CollisionBox(0, 0, texture, false));
-			renderable6 = new ComponentTester(texture2, 500, 100, 0, 0, false, 1.0f, 0.3f, 1.0f,
+			renderable6 = new ComponentTester(texture2, 500, 100, 0, 0, true, true, 1.0f, 0.3f, 10.0f, 2500.0f, 2500.0f,
 					new CollisionBox(0, 0, texture2, false));
-			/*renderable2 = new ComponentTester(new Texture(new File("Sol.png")), 50, 0, 0, 0, false, 1.0f, 0.3f,
-					new CollisionBox(0, 0, 900, 90, false));
-			renderable3 = new ComponentTester(new Texture(new File("Sol.png")), 50, 600, 0, 0, false, 1.0f, 0.3f,
-					new CollisionBox(0, 0, 900, 90, false));
-			renderable4 = new ComponentTester(new Texture(new File("Mur.png")), 0, 0, 0, 0, false, 1.0f, 0.0f,
-					new CollisionBox(0, 0, 90, 900, false));
-			renderable5 = new ComponentTester(new Texture(new File("Mur.png")), 1000, 0, 0, 0, false, 1.0f, 0.0f,
-					new CollisionBox(0, 0, 90, 900, false));*/
+			/*
+			 * renderable2 = new ComponentTester(new Texture(new File("Sol.png")), 50, 0, 0,
+			 * 0, false, 1.0f, 0.3f, new CollisionBox(0, 0, 900, 90, false));
+			 */ renderable3 = new ComponentTester(new Texture(new File("Sol.png")), 50, 600, 0, 0, false, false,
+			 1.0f, 0.3f, 1.0f, 1.0f, 1.0f, new CollisionBox(0, 0, 900, 90, false)); 
+			 /*renderable4 = new
+			 * ComponentTester(new Texture(new File("Mur.png")), 0, 0, 0, 0, false, 1.0f,
+			 * 0.0f, new CollisionBox(0, 0, 90, 900, false)); renderable5 = new
+			 * ComponentTester(new Texture(new File("Mur.png")), 1000, 0, 0, 0, false, 1.0f,
+			 * 0.0f, new CollisionBox(0, 0, 90, 900, false));
+			 */
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		renderer.render(renderable);
 		renderer.render(renderable6);
-		renderable.addMomentum(200, 0);
-		renderable6.addMomentum(00, 0);
+		renderer.render(renderable3);
+		renderable.addSpeed(300, 0);
+		renderable6.addSpeed(50, 0);
+		renderable3.addSpeed(0, 0);
 		while (true) {
 
-			/*renderer.render(renderable2);
-			renderer.render(renderable3);
-			renderer.render(renderable4);
-			renderer.render(renderable5);*/
-
+			/*
+			 * renderer.render(renderable2); renderer.render(renderable3);
+			 * renderer.render(renderable4); renderer.render(renderable5);
+			 */
 
 			synchronized (renderable) {
-				while (/*renderable.getVX() > 1 || renderable.getVY() > 1 || renderable.getVX() < -1
-						|| renderable.getVY() < -1*/ true) {
+				while (/*
+						 * renderable.getVX() > 1 || renderable.getVY() > 1 || renderable.getVX() < -1
+						 * || renderable.getVY() < -1
+						 */ true) {
 					try {
-						renderable.wait(Renderer.FRAME_RATE);
+						renderable.wait(Math.round(1000 / Renderer.FRAME_RATE));
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -89,14 +98,13 @@ final class Tester {
 					// Refreshes rendering
 					renderer.refreshRendering(renderable);
 					renderer.refreshRendering(renderable6);
+					renderer.refreshRendering(renderable3);
 				}
 			}
 			/*
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}*/
+			 * try { Thread.sleep(1000); } catch (InterruptedException e) {
+			 * e.printStackTrace(); }
+			 */
 		}
 
 	}
