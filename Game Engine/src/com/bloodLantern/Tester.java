@@ -50,7 +50,7 @@ final class Tester {
 			Texture texture2 = new Texture(new File("Image2.png"));
 			renderable = new ComponentTester(texture, 50, 100, 0, 0, true, true, 0.5f, 0.3f, 10.0f, 2500.0f, 2500.0f,
 					new CollisionBox(0, 0, texture, false));
-			renderable6 = new ComponentTester(texture2, 500, 100, 0, 0, true, true, 1.0f, 0.3f, 10.0f, 2500.0f, 2500.0f,
+			renderable6 = new ComponentTester(texture2, 500, 100, 0, 0, false, true, 1.0f, 0.3f, 10.0f, 2500.0f, 2500.0f,
 					new CollisionBox(0, 0, texture2, false));
 			/*
 			 * renderable2 = new ComponentTester(new Texture(new File("Sol.png")), 50, 0, 0,

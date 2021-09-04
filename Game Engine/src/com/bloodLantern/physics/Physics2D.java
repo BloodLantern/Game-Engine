@@ -134,6 +134,11 @@ public final class Physics2D {
 						if (Math.abs(depthX) < Math.abs(depthY)) {
 							// Collision along the X axis. React accordingly
 
+							double object2VX = (objectVX * (object.getWeight() - other.getWeight())
+									+ 2 * other.getWeight() * otherVX) / (object.getWeight() + other.getWeight());
+							double other2VX = (otherVX * (other.getWeight() - object.getWeight())
+									+ 2 * object.getWeight() * objectVX) / (object.getWeight() + other.getWeight());
+
 							// Bounciness & Friction
 							if (!other.isMovable()) {
 								object.setX(object.getX() + depthX);
@@ -154,54 +159,31 @@ public final class Physics2D {
 								if (objectVX != 0 && otherVX != 0) {
 									if (objectVX / Math.abs(objectVX) == otherVX / Math.abs(otherVX)) {
 										if (Math.abs(objectVX) > Math.abs(otherVX)) {
-											object.setVX(((objectVX * (object.getWeight() - other.getWeight())
-													+ 2 * other.getWeight() * otherVX)
-													/ (object.getWeight() + other.getWeight())) * object.getBouciness()
-													* other.getBouciness());
-											other.setVX(otherVX + (((otherVX * (other.getWeight() - object.getWeight())
-													+ 2 * object.getWeight() * objectVX)
-													/ (object.getWeight() + other.getWeight())) - otherVX)
-													* object.getBouciness() * other.getBouciness());
+											object.setVX(object2VX * object.getBouciness() * other.getBouciness());
+											other.setVX(
+													otherVX + other2VX * object.getBouciness() * other.getBouciness());
 										} else {
-											object.setVX(
-													objectVX + (((objectVX * (object.getWeight() - other.getWeight())
-															+ 2 * other.getWeight() * otherVX)
-															/ (object.getWeight() + other.getWeight())) - objectVX)
-															* object.getBouciness() * other.getBouciness());
-											other.setVX(((otherVX * (other.getWeight() - object.getWeight())
-													+ 2 * object.getWeight() * objectVX)
-													/ (object.getWeight() + other.getWeight())) * object.getBouciness()
-													* other.getBouciness());
+											object.setVX(objectVX
+													+ object2VX * object.getBouciness() * other.getBouciness());
+											other.setVX(other2VX * object.getBouciness() * other.getBouciness());
 										}
 									} else {
-										object.setVX(((objectVX * (object.getWeight() - other.getWeight())
-												+ 2 * other.getWeight() * otherVX)
-												/ (object.getWeight() + other.getWeight())) * object.getBouciness()
-												* other.getBouciness());
-										other.setVX(((otherVX * (other.getWeight() - object.getWeight())
-												+ 2 * object.getWeight() * objectVX)
-												/ (object.getWeight() + other.getWeight())) * object.getBouciness()
-												* other.getBouciness());
+										object.setVX(object2VX * object.getBouciness() * other.getBouciness());
+										other.setVX(other2VX * object.getBouciness() * other.getBouciness());
 									}
 								} else {
-									object.setVX(((objectVX * (object.getWeight() - other.getWeight())
-											+ 2 * other.getWeight() * otherVX)
-											/ (object.getWeight() + other.getWeight())) * object.getBouciness()
-											* other.getBouciness());
-									other.setVX(((otherVX * (other.getWeight() - object.getWeight())
-											+ 2 * object.getWeight() * objectVX)
-											/ (object.getWeight() + other.getWeight())) * object.getBouciness()
-											* other.getBouciness());
+									object.setVX(object2VX * object.getBouciness() * other.getBouciness());
+									other.setVX(other2VX * object.getBouciness() * other.getBouciness());
 								}
 							}
 
-							if (Math.abs(object.getVX()) < 0.01)
-								object.setVX(0);
-							if (Math.abs(other.getVX()) < 0.01)
-								other.setVX(0);
-
 						} else {
 							// Collision along the Y axis.
+
+							double object2VY = (objectVY * (object.getWeight() - other.getWeight())
+									+ 2 * other.getWeight() * otherVY) / (object.getWeight() + other.getWeight());
+							double other2VY = (otherVY * (other.getWeight() - object.getWeight())
+									+ 2 * object.getWeight() * objectVY) / (object.getWeight() + other.getWeight());
 
 							// Bounciness & Friction
 							if (!other.isMovable()) {
@@ -223,53 +205,33 @@ public final class Physics2D {
 								if (objectVY != 0 && otherVY != 0) {
 									if (objectVY / Math.abs(objectVY) == otherVY / Math.abs(otherVY)) {
 										if (Math.abs(objectVY) > Math.abs(otherVY)) {
-											object.setVY(((objectVY * (object.getWeight() - other.getWeight())
-													+ 2 * other.getWeight() * otherVY)
-													/ (object.getWeight() + other.getWeight())) * object.getBouciness()
-													* object.getBouciness());
-											other.setVY(otherVY + (((otherVY * (other.getWeight() - object.getWeight())
-													+ 2 * object.getWeight() * objectVY)
-													/ (object.getWeight() + other.getWeight())) - otherVY)
-													* object.getBouciness() * other.getBouciness());
+											object.setVY(object2VY * object.getBouciness() * object.getBouciness());
+											other.setVY(
+													otherVY + other2VY * object.getBouciness() * other.getBouciness());
 										} else {
-											object.setVY(
-													objectVY + (((objectVY * (object.getWeight() - other.getWeight())
-															+ 2 * other.getWeight() * otherVY)
-															/ (object.getWeight() + other.getWeight())) - objectVY)
-															* object.getBouciness() * other.getBouciness());
-											other.setVY(((otherVY * (other.getWeight() - object.getWeight())
-													+ 2 * object.getWeight() * objectVY)
-													/ (object.getWeight() + other.getWeight())) * object.getBouciness()
-													* other.getBouciness());
+											object.setVY(objectVY
+													+ object2VY * object.getBouciness() * other.getBouciness());
+											other.setVY(other2VY * object.getBouciness() * other.getBouciness());
 										}
 									} else {
-										object.setVY(((objectVY * (object.getWeight() - other.getWeight())
-												+ 2 * other.getWeight() * otherVY)
-												/ (object.getWeight() + other.getWeight())) * object.getBouciness()
-												* other.getBouciness());
-										other.setVY(((otherVY * (other.getWeight() - object.getWeight())
-												+ 2 * object.getWeight() * objectVY)
-												/ (object.getWeight() + other.getWeight())) * object.getBouciness()
-												* other.getBouciness());
+										object.setVY(object2VY * object.getBouciness() * other.getBouciness());
+										other.setVY(other2VY * object.getBouciness() * other.getBouciness());
 									}
 								} else {
-									object.setVY(((objectVY * (object.getWeight() - other.getWeight())
-											+ 2 * other.getWeight() * otherVY)
-											/ (object.getWeight() + other.getWeight())) * object.getBouciness()
-											* other.getBouciness());
-									other.setVY(((otherVY * (other.getWeight() - object.getWeight())
-											+ 2 * object.getWeight() * objectVY)
-											/ (object.getWeight() + other.getWeight())) * object.getBouciness()
-											* other.getBouciness());
+									object.setVY(object2VY * object.getBouciness() * other.getBouciness());
+									other.setVY(other2VY * object.getBouciness() * other.getBouciness());
 								}
 							}
-
-							if (Math.abs(object.getVY()) < 0.01)
-								object.setVY(0);
-							if (Math.abs(other.getVY()) < 0.01)
-								other.setVY(0);
 						}
 					}
+					if (Math.abs(object.getVX()) < 0.01)
+						object.setVX(0);
+					if (Math.abs(other.getVX()) < 0.01)
+						other.setVX(0);
+					if (Math.abs(object.getVY()) < 0.01)
+						object.setVY(0);
+					if (Math.abs(other.getVY()) < 0.01)
+						other.setVY(0);
 				}
 			}
 		}
