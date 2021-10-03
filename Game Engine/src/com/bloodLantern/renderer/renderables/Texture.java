@@ -16,28 +16,34 @@ public class Texture implements Renderable2D {
 	 * Image used to represent this Texture object.
 	 */
 	private final Image image;
+
 	/**
 	 * X coordinate of this Renderable object. If nested into another object
 	 * (example: {@link Animation}), it is an offset.
 	 */
 	private double x = 0;
+
 	/**
 	 * Y coordinate of this Renderable object. If nested into another object
 	 * (example: {@link Animation}), it is an offset.
 	 */
 	private double y = 0;
+
 	/**
 	 * Last X position.
 	 */
 	private double xBefore = 0;
+
 	/**
 	 * Last Y position.
 	 */
 	private double yBefore = 0;
+
 	/**
 	 * Integer equivalence of {@link #x}.
 	 */
 	private int roundedX = 0;
+
 	/**
 	 * Integer equivalence of {@link #y}.
 	 */

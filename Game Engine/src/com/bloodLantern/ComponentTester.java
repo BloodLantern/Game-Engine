@@ -14,11 +14,16 @@ public class ComponentTester implements Physic2D, Renderable2D {
 	private int roundedY = 0;
 	private double x = 0;
 	private double y = 0;
+	/**
+	 * In p/s.
+	 */
 	private double vX = 0;
+	/**
+	 * In p/s.
+	 */
 	private double vY = 0;
-	private double xBefore = 0;
-	private double yBefore = 0;
 	private boolean affectedByGravity = true;
+	private boolean movable = true;
 	/**
 	 * In Kg.
 	 */
@@ -31,6 +36,16 @@ public class ComponentTester implements Physic2D, Renderable2D {
 	 * Friction between 0 and 1.
 	 */
 	private float friction = 0.3f;
+	/**
+	 * Aerodynamism is surface in p2 multiplied by a coefficient for the shape. (X
+	 * axis)
+	 */
+	private float aerodynamismX = 2500.0f;
+	/**
+	 * Aerodynamism is surface in p2 multiplied by a coefficient for the shape. (Y
+	 * axis)
+	 */
+	private float aerodynamismY = 2500.0f;
 	private CollisionBox collisionBox;
 
 	public ComponentTester(Texture texture) {
@@ -49,7 +64,8 @@ public class ComponentTester implements Physic2D, Renderable2D {
 	 * @param collisionBox
 	 */
 	public ComponentTester(@NotNull Texture texture, int x, int y, double vX, double vY, boolean affectedByGravity,
-			float bounciness, float friction, float weight, @Nullable CollisionBox collisionBox) {
+			boolean movable, float bounciness, float friction, float weight, float aerodynamismX, float aerodynamismY,
+			@Nullable CollisionBox collisionBox) {
 		this.texture = texture;
 		this.roundedX = x;
 		this.roundedY = y;
@@ -58,9 +74,12 @@ public class ComponentTester implements Physic2D, Renderable2D {
 		this.vX = vX;
 		this.vY = vY;
 		this.affectedByGravity = affectedByGravity;
+		this.movable = movable;
 		this.bounciness = bounciness;
 		this.friction = friction;
 		this.weight = weight;
+		this.aerodynamismX = aerodynamismX;
+		this.aerodynamismY = aerodynamismY;
 		if (collisionBox != null)
 			this.collisionBox = collisionBox;
 	}
@@ -79,7 +98,7 @@ public class ComponentTester implements Physic2D, Renderable2D {
 	 * @Override
 	 */
 	@Override
-	public void addMomentum(double vX, double vY) {
+	public void addSpeed(double vX, double vY) {
 		this.vX += vX;
 		this.vY += vY;
 	}
@@ -88,7 +107,7 @@ public class ComponentTester implements Physic2D, Renderable2D {
 	 * @Override
 	 */
 	@Override
-	public void setMomentum(double vX, double vY) {
+	public void setSpeed(double vX, double vY) {
 		this.vX = vX;
 		this.vY = vY;
 	}
@@ -187,6 +206,22 @@ public class ComponentTester implements Physic2D, Renderable2D {
 	 * @Override
 	 */
 	@Override
+	public boolean isMovable() {
+		return movable;
+	}
+
+	/**
+	 * @Override
+	 */
+	@Override
+	public void setMovable(boolean movable) {
+		this.movable = movable;
+	}
+
+	/**
+	 * @Override
+	 */
+	@Override
 	public double getX() {
 		return x;
 	}
@@ -254,38 +289,6 @@ public class ComponentTester implements Physic2D, Renderable2D {
 	 * @Override
 	 */
 	@Override
-	public double getXBefore() {
-		return xBefore;
-	}
-
-	/**
-	 * @Override
-	 */
-	@Override
-	public void setXBefore(double xBefore) {
-		this.xBefore = xBefore;
-	}
-
-	/**
-	 * @Override
-	 */
-	@Override
-	public double getYBefore() {
-		return yBefore;
-	}
-
-	/**
-	 * @Override
-	 */
-	@Override
-	public void setYBefore(double yBefore) {
-		this.yBefore = yBefore;
-	}
-
-	/**
-	 * @Override
-	 */
-	@Override
 	public float getFriction() {
 		return friction;
 	}
@@ -312,6 +315,38 @@ public class ComponentTester implements Physic2D, Renderable2D {
 	@Override
 	public final void setWeight(float weight) {
 		this.weight = weight;
+	}
+
+	/**
+	 * @Override
+	 */
+	@Override
+	public final float getAerodynamismX() {
+		return aerodynamismX;
+	}
+
+	/**
+	 * @Override
+	 */
+	@Override
+	public final void setAerodynamismX(float aerodynamismX) {
+		this.aerodynamismX = aerodynamismX;
+	}
+
+	/**
+	 * @Override
+	 */
+	@Override
+	public final float getAerodynamismY() {
+		return aerodynamismY;
+	}
+
+	/**
+	 * @Override
+	 */
+	@Override
+	public final void setAerodynamismY(float aerodynamismY) {
+		this.aerodynamismY = aerodynamismY;
 	}
 
 }

@@ -39,8 +39,8 @@ final class Tester {
 				new CollisionBox(0, 0, texture2, false));
 		renderer.render(renderable);
 		renderer.render(renderable2);
-		renderable.addMomentum(100, 0);
-		renderable2.addMomentum(-100, 0);
+		renderable.addSpeed(100, 0);
+		renderable2.addSpeed(-100, 0);
 
 		new Thread(new ComputePhysics(renderer)) {
 			{

@@ -47,7 +47,7 @@ public class Renderer {
 	 * Renderer has been created for now.
 	 */
 	public static Renderer firstRenderer = null;
-
+	
 	/**
 	 * List containing every Renderable2D object currently rendered by this Renderer
 	 * object.

@@ -35,32 +35,4 @@ public interface Positionable2D {
 	 */
 	public void setY(double y);
 
-	/**
-	 * Getter for the last X coordinate of this Positionable2D object.
-	 * 
-	 * @return the last X coordinate of this Positionable2D object.
-	 */
-	public double getXBefore();
-
-	/**
-	 * Setter for the last X coordinate of this Positionable2D object.
-	 * 
-	 * @params xBefore the last X position of this Positionable2D object to set
-	 */
-	public void setXBefore(double xBefore);
-
-	/**
-	 * Getter for the last Y coordinate of this Positionable2D object.
-	 * 
-	 * @return the last Y coordinate of this Positionable2D object.
-	 */
-	public double getYBefore();
-
-	/**
-	 * Setter for the last Y coordinate of this Positionable2D object.
-	 * 
-	 * @params yBefore the last Y position of this Positionable2D object to set
-	 */
-	public void setYBefore(double yBefore);
-
 }
