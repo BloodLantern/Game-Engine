@@ -12,21 +12,21 @@ import com.bloodLantern.renderer.renderables.Renderable2D;
  * Class containing useful static methods when working with Physics (Physic
  * objects).
  * 
- * @author BloodLantern
+ * @author cc_hunter_boy
  */
 public final class Physics2D {
 	
 	/**
-	 * The update rate of the Physics calculations.
+	 * The time between each physic update.
 	 */
-	public static final int UPDATE_RATE = Math.round(1000 / 20);
+	public static final int UPDATE_RATE = 1000 / 20;
 
 	/**
 	 * G constant in p/s2. Increasing this value will cause objects to fall faster.
 	 */
 	private static final double GRAVITY = 490;
 	/**
-	 * Constant in kg/p3. Increasing this value will cause objects to slow faster.
+	 * Constant in kg/p3. Increasing this value will cause objects to lose their speed faster.
 	 */
 	private static final double AIR_DENSITY = 0.00001;
 
@@ -41,17 +41,17 @@ public final class Physics2D {
 	 */
 	public static void calcMomentum(Physic2D object, Renderer renderer) {
 
-		object.setX(object.getVX() / Renderer.FRAME_RATE + object.getX());
-		object.setY(object.getVY() / Renderer.FRAME_RATE + object.getY());
+		object.setX(object.getVX() / Renderer.getFrameRate() + object.getX());
+		object.setY(object.getVY() / Renderer.getFrameRate() + object.getY());
 
 		object.addSpeed(
 				-Math.abs(object.getVX()) * object.getVX() * AIR_DENSITY * object.getAerodynamismX()
-						/ (2 * Renderer.FRAME_RATE * object.getWeight()),
+						/ (2 * Renderer.getFrameRate() * object.getWeight()),
 				-Math.abs(object.getVY()) * object.getVY() * AIR_DENSITY * object.getAerodynamismY()
-						/ (2 * Renderer.FRAME_RATE * object.getWeight()));
+						/ (2 * Renderer.getFrameRate() * object.getWeight()));
 
 		if (object.isAffectedByGravity())
-			object.addSpeed(0, GRAVITY / Renderer.FRAME_RATE);
+			object.addSpeed(0, GRAVITY / Renderer.getFrameRate());
 
 		calcCollisions(object, renderer);
 

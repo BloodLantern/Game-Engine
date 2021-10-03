@@ -66,6 +66,9 @@ public class ComponentTester implements Physic2D, Renderable2D {
 	public ComponentTester(@NotNull Texture texture, int x, int y, double vX, double vY, boolean affectedByGravity,
 			boolean movable, float bounciness, float friction, float weight, float aerodynamismX, float aerodynamismY,
 			@Nullable CollisionBox collisionBox) {
+		if (texture == null)
+			throw new IllegalArgumentException(
+					"The Texture argument from the ComponentTester constructor musn't be null!");
 		this.texture = texture;
 		this.roundedX = x;
 		this.roundedY = y;
@@ -80,12 +83,12 @@ public class ComponentTester implements Physic2D, Renderable2D {
 		this.weight = weight;
 		this.aerodynamismX = aerodynamismX;
 		this.aerodynamismY = aerodynamismY;
-		if (collisionBox != null)
-			this.collisionBox = collisionBox;
+		this.collisionBox = collisionBox;
 	}
 
 	/**
-	 * Returns a String representation of this object as this one: {@code ComponentTester - x, y, texture.getName()}
+	 * Returns a String representation of this object as this one:
+	 * {@code ComponentTester - x, y, texture.getName()}
 	 * 
 	 * @Override
 	 */

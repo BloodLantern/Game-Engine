@@ -34,20 +34,20 @@ public class Renderer {
 	 * The default screen refresh rate. Used if and only if {@link #frameRate} is
 	 * still equal to -1 at runtime.
 	 */
-	public static final long FRAME_RATE_DEFAULT = Math.round(1000 / 60);
+	public static final int FRAME_RATE_DEFAULT = Math.round(1000 / 60);
 
 	/**
 	 * The refresh rate of the current screen. Use {@link #FRAME_RATE_DEFAULT}
 	 * instead if still equal to -1 at runtime.
 	 */
-	public static long frameRate = -1;
+	public static int frameRate = -1;
 
 	/**
 	 * The first Renderer instance to be created is stored here. If null, no
 	 * Renderer has been created for now.
 	 */
 	public static Renderer firstRenderer = null;
-	
+
 	/**
 	 * List containing every Renderable2D object currently rendered by this Renderer
 	 * object.
@@ -96,41 +96,40 @@ public class Renderer {
 				e.printStackTrace();
 			}
 		// Creating a repeating GUI Task
-		Timeline repeatingGuiTask = new Timeline(
-				new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						try {
-							root.getChildren().clear();
-							// Update last frame time
-							lastFrameTime = System.currentTimeMillis();
-							// Actions to execute each frame with the GUI.
-							ImageView iView = null;
-							// Sets the background
-							if (background != null) {
-								iView = new ImageView(background.getTexture().getImage());
-								iView.setX(0);
-								iView.setY(0);
-								iView.setFitHeight(scene.getHeight());
-								iView.setFitWidth(scene.getWidth());
-								iView.setViewOrder(10);
-								root.getChildren().add(iView);
-							}
-							// Renders the Renderable2D objects stored in the rendering list
-							for (Renderable2D r : rendering) {
-								iView = new ImageView(r.getTexture().getImage());
-								iView.setX(r.getX());
-								iView.setY(r.getY());
-								root.getChildren().add(iView);
-							}
-						} catch (Exception e) {
-							System.err.println("Exception in render update loop.");
-							e.printStackTrace();
-						}
+		Timeline repeatingGuiTask = new Timeline(new KeyFrame(Duration.millis(1000.0 / getFrameRate()), new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					root.getChildren().clear();
+					// Update last frame time
+					lastFrameTime = System.currentTimeMillis();
+					// Actions to execute each frame with the GUI.
+					ImageView iView = null;
+					// Sets the background
+					if (background != null) {
+						iView = new ImageView(background.getTexture().getImage());
+						iView.setX(0);
+						iView.setY(0);
+						iView.setFitHeight(scene.getHeight());
+						iView.setFitWidth(scene.getWidth());
+						iView.setViewOrder(10);
+						root.getChildren().add(iView);
 					}
-				}));
-		// Setting its cycle count as indefinite: it will loop while the JavaFXApp's
-		// stop() method hasn't been called
+					// Renders the Renderable2D objects stored in the rendering list
+					for (Renderable2D r : rendering) {
+						iView = new ImageView(r.getTexture().getImage());
+						iView.setX(r.getX());
+						iView.setY(r.getY());
+						root.getChildren().add(iView);
+					}
+				} catch (Exception e) {
+					System.err.println("Exception in render update loop.");
+					e.printStackTrace();
+				}
+			}
+		}));
+		// Setting its cycle count as indefinite: it will loop until the JavaFXApp's
+		// stop() method has been called.
 		repeatingGuiTask.setCycleCount(Timeline.INDEFINITE);
 		repeatingGuiTask.play();
 	}
@@ -197,7 +196,10 @@ public class Renderer {
 	 *                     animation type should be used only when moving in or when
 	 *                     moving out or both. If type parameter is null or equal to
 	 *                     {@link com.bloodLantern.renderer.renderables.movements.Movements#NONE
-	 *                     none}, this will have not effect.
+	 *                     none}, this will have not effect. If this argument is
+	 *                     null, it will be equal to
+	 *                     {@link com.bloodLantern.renderer.renderables.movements.Movements.Types#IN_OUT
+	 *                     in/out}.
 	 */
 	public void move(@NotNull Renderable2D renderable2D, int xDistance, int yDistance, long duration,
 			@Nullable Movements moveType, @Nullable Movements.Types inOut) {
@@ -360,7 +362,7 @@ public class Renderer {
 	 * @return the frame rate of this screen: {@link #frameRate} If it couldn't find
 	 *         it, returns {@link #FRAME_RATE_DEFAULT} instead.
 	 */
-	public final long getFrameRate() {
+	public static final int getFrameRate() {
 		return frameRate != -1 ? frameRate : FRAME_RATE_DEFAULT;
 	}
 

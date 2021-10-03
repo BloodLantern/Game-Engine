@@ -81,6 +81,22 @@ public class Texture implements Renderable2D {
 		return image.getWidth();
 	}
 
+	public double getXBefore() {
+		return xBefore;
+	}
+
+	public void setXBefore(double xBefore) {
+		this.xBefore = xBefore;
+	}
+
+	public double getYBefore() {
+		return yBefore;
+	}
+
+	public void setYBefore(double yBefore) {
+		this.yBefore = yBefore;
+	}
+
 	/**
 	 * @Override
 	 */
@@ -111,38 +127,6 @@ public class Texture implements Renderable2D {
 	@Override
 	public void setY(double y) {
 		this.y = y;
-	}
-
-	/**
-	 * @Override
-	 */
-	@Override
-	public double getXBefore() {
-		return xBefore;
-	}
-
-	/**
-	 * @Override
-	 */
-	@Override
-	public void setXBefore(double xBefore) {
-		this.xBefore = xBefore;
-	}
-
-	/**
-	 * @Override
-	 */
-	@Override
-	public double getYBefore() {
-		return yBefore;
-	}
-
-	/**
-	 * @Override
-	 */
-	@Override
-	public void setYBefore(double yBefore) {
-		this.yBefore = yBefore;
 	}
 
 	/**
