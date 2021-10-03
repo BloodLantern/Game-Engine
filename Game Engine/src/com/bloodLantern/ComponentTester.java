@@ -66,6 +66,16 @@ public class ComponentTester implements Physic2D, Renderable2D {
 	}
 
 	/**
+	 * Returns a String representation of this object as this one: {@code ComponentTester - x, y, texture.getName()}
+	 * 
+	 * @Override
+	 */
+	@Override
+	public String toString() {
+		return "ComponentTester - (" + x + " ; " + y + ")";
+	}
+
+	/**
 	 * @Override
 	 */
 	@Override

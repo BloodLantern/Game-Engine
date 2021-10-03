@@ -1,13 +1,10 @@
 package com.bloodLantern.renderer;
 
-import java.awt.Frame;
+import java.awt.GraphicsEnvironment;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import com.bloodLantern.annotations.NotNull;
 import com.bloodLantern.annotations.Nullable;
@@ -16,106 +13,169 @@ import com.bloodLantern.renderer.renderables.Renderable2D;
 import com.bloodLantern.renderer.renderables.Texture;
 import com.bloodLantern.renderer.renderables.movements.Movements;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
+import javafx.util.Duration;
+
 /**
- * A Renderer is an object to add to a frame. It is used to render
- * {@link com.bloodLantern.renderer.renderables Renderable objects}. It acts as
- * a Container for Components.
+ * A Renderer is used to render {@link com.bloodLantern.renderer.renderables
+ * Renderable objects}. It acts as a container for components.
  * 
  * @author BloodLantern
  */
-public class Renderer extends JPanel implements Runnable {
+public class Renderer {
 
 	/**
-	 * The frame rate of the screen used to display the application.
+	 * The default screen refresh rate. Used if and only if {@link #frameRate} is
+	 * still equal to -1 at runtime.
 	 */
-	public static final int FRAME_RATE = Math.round(1000 / 60);
+	public static final long FRAME_RATE_DEFAULT = Math.round(1000 / 60);
+
+	/**
+	 * The refresh rate of the current screen. Use {@link #FRAME_RATE_DEFAULT}
+	 * instead if still equal to -1 at runtime.
+	 */
+	public static long frameRate = -1;
+
+	/**
+	 * The first Renderer instance to be created is stored here. If null, no
+	 * Renderer has been created for now.
+	 */
+	public static Renderer firstRenderer = null;
+
 	/**
 	 * List containing every Renderable2D object currently rendered by this Renderer
 	 * object.
 	 */
 	private final ArrayList<Renderable2D> rendering = new ArrayList<Renderable2D>();
-	/**
-	 * Whether the Renderer is currently active.
-	 */
-	public boolean running = true;
 
 	/**
-	 * Default constructor for Swing JFrame.
-	 * 
-	 * @param jFrame a Swing JFrame.
+	 * Background Renderable2D
 	 */
-	public Renderer(JFrame jFrame) {
-		jFrame.add(this);
+	private Renderable2D background = null;
+
+	/**
+	 * Last frame time (in milliseconds).
+	 */
+	private long lastFrameTime = -1;
+
+	/**
+	 * Scene used to render everything.
+	 */
+	private Scene scene = null;
+
+	/**
+	 * Root node where every rendered components must be added.
+	 */
+	private Group root = new Group();
+
+	static {
+		int refreshRate = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode()
+				.getRefreshRate();
+		frameRate = refreshRate != 0 ? refreshRate : -1;
 	}
 
 	/**
-	 * Default constructor for AWT Frame.
-	 * 
-	 * @param frame an AWT Frame.
+	 * Default constructor. Automatically waits for the JavaFXApp instance to set up
+	 * the {@link #scene}.
 	 */
-	public Renderer(Frame frame) {
-		frame.add(this);
+	public Renderer() {
+		if (firstRenderer == null)
+			firstRenderer = this;
+		if (scene == null)
+			try {
+				synchronized (this) {
+					wait();
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		// Creating a repeating GUI Task
+		Timeline repeatingGuiTask = new Timeline(
+				new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						try {
+							root.getChildren().clear();
+							// Update last frame time
+							lastFrameTime = System.currentTimeMillis();
+							// Actions to execute each frame with the GUI.
+							ImageView iView = null;
+							// Sets the background
+							if (background != null) {
+								iView = new ImageView(background.getTexture().getImage());
+								iView.setX(0);
+								iView.setY(0);
+								iView.setFitHeight(scene.getHeight());
+								iView.setFitWidth(scene.getWidth());
+								iView.setViewOrder(10);
+								root.getChildren().add(iView);
+							}
+							// Renders the Renderable2D objects stored in the rendering list
+							for (Renderable2D r : rendering) {
+								iView = new ImageView(r.getTexture().getImage());
+								iView.setX(r.getX());
+								iView.setY(r.getY());
+								root.getChildren().add(iView);
+							}
+						} catch (Exception e) {
+							System.err.println("Exception in render update loop.");
+							e.printStackTrace();
+						}
+					}
+				}));
+		// Setting its cycle count as indefinite: it will loop while the JavaFXApp's
+		// stop() method hasn't been called
+		repeatingGuiTask.setCycleCount(Timeline.INDEFINITE);
+		repeatingGuiTask.play();
 	}
 
 	/**
-	 * Used to render a Renderable2D object at a specified location.
+	 * Used to render a Renderable2D object at a specified location. Render is
+	 * actually adding the object to the {@code rendering} list. It will then be
+	 * rendered in the next frame.
 	 * 
 	 * @param renderable2D the Component to render.
 	 * @param x            the x position where the Component should be rendered.
 	 * @param y            the y position where the Component should be rendered.
 	 * 
-	 * @throws NullPointerException if the {@code component} argument is null.
+	 * @throws NullPointerException if the {@code renderable2D} argument is null.
 	 */
-	public void render(Renderable2D renderable2D, int x, int y) throws NullPointerException {
-		getGraphics().drawImage(renderable2D.getTexture().getImage(), x, y, null);
+	public void render(@NotNull Renderable2D renderable2D, int x, int y) throws NullPointerException {
+		if (renderable2D == null)
+			throw new NullPointerException("Cannot render a null Renderable2D object!");
 		if (!rendering.contains(renderable2D))
 			rendering.add(renderable2D);
 	}
 
 	/**
-	 * Used to render a Renderable2D object at its rounded location.
+	 * Used to render a Renderable2D object at its rounded location. Render is
+	 * actually adding the object to the {@code rendering} list. It will then be
+	 * rendered in the next frame.
 	 * 
 	 * @param renderable2D the object to render
 	 */
-	public void render(Renderable2D renderable2D) {
+	public void render(@NotNull Renderable2D renderable2D) {
 		render(renderable2D, renderable2D.getRoundedX(), renderable2D.getRoundedY());
 	}
 
 	/**
-	 * Renders every single Renderable2D object of the {@code rendering} list.
-	 */
-	public void renderComponents() {
-		if (rendering.size() > 0)
-			for (Renderable2D r : rendering)
-				render(r, r.getRoundedX(), r.getRoundedY());
-	}
-
-	/**
-	 * Force stopping rendering a Component.
+	 * Force stop rendering a Component.
 	 * 
 	 * @param renderable2D
 	 */
-	public void stopRender(Renderable2D renderable2D) {
+	public void stopRender(@NotNull Renderable2D renderable2D) {
+		// To prevent a ConcurrentModificationException
 		Renderable2D r2d = null;
 		for (Renderable2D r : rendering)
 			if (r.equals(renderable2D))
 				r2d = r;
 		rendering.remove(r2d);
-	}
-
-	/**
-	 * Stops rendering a Renderable2D object of the {@code rendering} list, renders
-	 * every components using {@link #renderComponents()} and then renders this
-	 * object again using {@link #render(Renderable2D)}.
-	 * 
-	 * @param renderable2D the object to refresh
-	 */
-	public void refreshRendering(Renderable2D renderable2D) {
-		stopRender(renderable2D);
-		getGraphics().setColor(getBackground());
-		getGraphics().fillRect(0, 0, getWidth(), getHeight());
-		renderComponents();
-		render(renderable2D);
 	}
 
 	/**
@@ -141,7 +201,6 @@ public class Renderer extends JPanel implements Runnable {
 	 */
 	public void move(@NotNull Renderable2D renderable2D, int xDistance, int yDistance, long duration,
 			@Nullable Movements moveType, @Nullable Movements.Types inOut) {
-		running = true;
 		if (moveType == null)
 			moveType = Movements.NONE;
 		final Movements type = moveType;
@@ -191,20 +250,16 @@ public class Renderer extends JPanel implements Runnable {
 
 							// Remove last position image by rendering everything except the component
 							stopRender(renderable2D);
-
 							move(renderable2D, xDistance, yDistance, 1);
-
-							renderComponents();
-							getGraphics().setColor(getBackground());
-							getGraphics().fillRect(0, 0, getWidth(), getHeight());
+							while (lastFrameTime != System.currentTimeMillis()) {
+							}
 							render(renderable2D);
 						}
-						running = false;
 						cancel();
 					}
 				}
 
-			}, 0, FRAME_RATE);
+			}, 0, getFrameRate());
 		// Other Movement types
 		else
 			timer.scheduleAtFixedRate(new TimerTask() {
@@ -212,18 +267,17 @@ public class Renderer extends JPanel implements Runnable {
 				@Override
 				public void run() {
 					if (System.currentTimeMillis() - startTime > fDuration) {
-						running = false;
 						cancel();
 					}
 					try {
 						renderable2D
-								.setRoundedX((int) ((float) type.getClazz()
+								.setX((double) ((float) type.getClazz()
 										.getMethod(inout.getMethodName(), float.class, float.class, float.class,
 												float.class)
 										.invoke(null, System.currentTimeMillis() - startTime, startingXPos, fXDistance,
 												fDuration)));
 						renderable2D
-								.setRoundedY((int) ((float) type.getClazz()
+								.setY((double) ((float) type.getClazz()
 										.getMethod(inout.getMethodName(), float.class, float.class, float.class,
 												float.class)
 										.invoke(null, System.currentTimeMillis() - startTime, startingYPos, fYDistance,
@@ -231,12 +285,11 @@ public class Renderer extends JPanel implements Runnable {
 					} catch (NoSuchMethodException | SecurityException | IllegalAccessException
 							| IllegalArgumentException | InvocationTargetException e1) {
 						e1.printStackTrace();
-						running = false;
 						cancel();
 					}
 				}
 
-			}, 0, FRAME_RATE);
+			}, 0, frameRate);
 	}
 
 	/**
@@ -258,11 +311,11 @@ public class Renderer extends JPanel implements Runnable {
 	 * @see com.bloodLantern.renderer.Renderer#move(Renderable2D, int, int, long,
 	 *      Movements, Movements.Types) Full move method
 	 */
-	public void move(Renderable2D renderable2D, int xDistance, int yDistance, long time) {
+	public void move(@NotNull Renderable2D renderable2D, int xDistance, int yDistance, long time) {
 		move(renderable2D, xDistance, yDistance, time, Movements.NONE, null);
 	}
 
-	private void move(Renderable2D renderable2D, int xDistance, int yDistance, int power) {
+	private void move(@NotNull Renderable2D renderable2D, int xDistance, int yDistance, int power) {
 		// X movement
 		if (xDistance > 0)
 			renderable2D.setRoundedX(renderable2D.getRoundedX() + power);
@@ -280,38 +333,68 @@ public class Renderer extends JPanel implements Runnable {
 	 * 
 	 * @param bg the Texture of the Image to set as background.
 	 */
-	public void setBackground(Texture bg) {
-		getGraphics().drawImage(bg.getImage(), 0, 0, null);
+	public void setBackground(@NotNull Texture bg) {
+		background = bg;
 	}
 
 	/**
-	 * Renders this Animation as this Renderer's background.
+	 * Renders this Animation as this Renderer's background. <strong>Not currently
+	 * implemented.</strong>
 	 * 
 	 * @param bg the Animation to set as background.
 	 */
-	public void setBackground(Animation bg) {
+	public void setBackground(@NotNull Animation bg) {
 		// TODO Renderer animation background
-	}
-
-	@Override
-	public void run() {
-		synchronized (this) {
-			while (running) {
-				try {
-					wait(FRAME_RATE);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				renderComponents();
-			}
-		}
+		background = bg;
 	}
 
 	/**
-	 * @return the rendering
+	 * @return A list of the currently rendered Renderable2D objects.
 	 */
+	@NotNull
 	public final ArrayList<Renderable2D> getRendering() {
 		return rendering;
+	}
+
+	/**
+	 * @return the frame rate of this screen: {@link #frameRate} If it couldn't find
+	 *         it, returns {@link #FRAME_RATE_DEFAULT} instead.
+	 */
+	public final long getFrameRate() {
+		return frameRate != -1 ? frameRate : FRAME_RATE_DEFAULT;
+	}
+
+	/**
+	 * Setter for the Scene of this Renderer.
+	 * 
+	 * @param scene the scene to set
+	 */
+	public final void setScene(@NotNull Scene scene) {
+		this.scene = scene;
+	}
+
+	/**
+	 * @return the root
+	 */
+	@Nullable
+	public final Group getRootNode() {
+		return root;
+	}
+
+	/**
+	 * @Override
+	 */
+	@Override
+	public String toString() {
+		String result = "";
+		if (firstRenderer.equals(this))
+			result += "First ";
+		result += "Renderer -> currently rendering:";
+		for (Renderable2D r : rendering)
+			result += "\n\t- " + r;
+		if (rendering.size() == 0)
+			result += " Nothing.";
+		return result;
 	}
 
 }

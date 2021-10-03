@@ -9,8 +9,8 @@ import com.bloodLantern.renderer.renderables.Texture;
  */
 public class CollisionBox extends Collidable {
 	
-	private int width;
-	private int height;
+	private double width;
+	private double height;
 
 	/**
 	 * @param x
@@ -19,7 +19,7 @@ public class CollisionBox extends Collidable {
 	 * @param height
 	 * @param trigger
 	 */
-	public CollisionBox(int x, int y, int width, int height, boolean trigger) {
+	public CollisionBox(double x, double y, double width, double height, boolean trigger) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -33,39 +33,39 @@ public class CollisionBox extends Collidable {
 	 * @param texture used to get collisionBox's size
 	 * @param trigger
 	 */
-	public CollisionBox(int x, int y, Texture texture, boolean trigger) {
+	public CollisionBox(double x, double y, Texture texture, boolean trigger) {
 		this.x = x;
 		this.y = y;
-		this.width = texture.getImage().getWidth(null);
-		this.height = texture.getImage().getHeight(null);
+		this.width = texture.getImage().getWidth();
+		this.height = texture.getImage().getHeight();
 		this.trigger = trigger;
 	}
 
 	/**
 	 * @return the width
 	 */
-	public int getWidth() {
+	public double getWidth() {
 		return width;
 	}
 
 	/**
 	 * @param width the width to set
 	 */
-	public void setWidth(int width) {
+	public void setWidth(double width) {
 		this.width = width;
 	}
 
 	/**
 	 * @return the height
 	 */
-	public int getHeight() {
+	public double getHeight() {
 		return height;
 	}
 
 	/**
 	 * @param height the height to set
 	 */
-	public void setHeight(int height) {
+	public void setHeight(double height) {
 		this.height = height;
 	}
 

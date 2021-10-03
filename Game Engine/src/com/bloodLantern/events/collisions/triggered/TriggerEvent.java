@@ -12,8 +12,8 @@ public abstract class TriggerEvent extends CollisionEvent {
 	/**
 	 * 
 	 */
-	public TriggerEvent(Collidable object1, Collidable object2) {
-		super(object1, object2);
+	public TriggerEvent(Object source, Collidable object1, Collidable object2) {
+		super(source, object1, object2);
 	}
 
 }

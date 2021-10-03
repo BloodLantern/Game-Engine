@@ -1,10 +1,8 @@
 package com.bloodLantern.renderer.renderables;
 
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
+import com.bloodLantern.annotations.NotNull;
 
-import javax.imageio.ImageIO;
+import javafx.scene.image.Image;
 
 /**
  * A Texture object represents an image for a
@@ -37,21 +35,19 @@ public class Texture implements Renderable2D {
 	 */
 	private double yBefore = 0;
 	/**
-	 * Integer equivalence of {@link x}.
+	 * Integer equivalence of {@link #x}.
 	 */
 	private int roundedX = 0;
 	/**
-	 * Integer equivalence of {@link y}.
+	 * Integer equivalence of {@link #y}.
 	 */
 	private int roundedY = 0;
 
 	/**
 	 * Default constructor.
-	 * 
-	 * @throws IOException if the image file isn't a valid file.
 	 */
-	public Texture(File image) throws IOException {
-		this.image = (Image) ImageIO.read(image);
+	public Texture(@NotNull String filePath) {
+		image = new Image(filePath);
 	}
 
 	/**
@@ -59,6 +55,24 @@ public class Texture implements Renderable2D {
 	 */
 	public Image getImage() {
 		return image;
+	}
+	
+	/**
+	 * Getter for the image's height.
+	 * 
+	 * @return the image's height
+	 */
+	public double getHeight() {
+		return image.getHeight();
+	}
+
+	/**
+	 * Getter for the image's width.
+	 * 
+	 * @return the image's width
+	 */
+	public double getWidth() {
+		return image.getWidth();
 	}
 
 	/**
@@ -126,6 +140,8 @@ public class Texture implements Renderable2D {
 	}
 
 	/**
+	 * Because it is already a Texture object, it returns itself.
+	 * 
 	 * @Override
 	 */
 	@Override

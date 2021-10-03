@@ -18,8 +18,8 @@ public class CollisionEnterEvent extends CollisionEvent implements Cancellable {
 	 * @param object1
 	 * @param object2
 	 */
-	public CollisionEnterEvent(Collidable object1, Collidable object2) {
-		super(object1, object2);
+	public CollisionEnterEvent(Object source, Collidable object1, Collidable object2) {
+		super(source, object1, object2);
 		// TODO Auto-generated constructor stub
 	}
 

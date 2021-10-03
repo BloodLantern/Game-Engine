@@ -15,6 +15,11 @@ import com.bloodLantern.renderer.renderables.Renderable2D;
  * @author BloodLantern
  */
 public final class Physics2D {
+	
+	/**
+	 * The update rate of the Physics calculations.
+	 */
+	public static final int UPDATE_RATE = Math.round(1000 / 20);
 
 	/**
 	 * G constant. Increasing this value will cause objects to fall faster.

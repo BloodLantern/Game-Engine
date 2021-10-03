@@ -1,5 +1,7 @@
 package com.bloodLantern.events;
 
+import java.util.EventObject;
+
 /**
  * An Event is an object created when something happens. Methods annotated with
  * {@link EventListener} are called with the created object when their attached
@@ -7,12 +9,13 @@ package com.bloodLantern.events;
  * 
  * @author BloodLantern
  */
-public abstract class Event {
+public abstract class Event extends EventObject implements Cloneable {
 
 	/**
 	 * Default superclass constructor.
 	 */
-	public Event() {
+	public Event(Object source) {
+		super(source);
 	}
 
 }

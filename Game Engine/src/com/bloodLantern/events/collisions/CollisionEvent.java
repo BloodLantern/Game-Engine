@@ -20,7 +20,8 @@ public abstract class CollisionEvent extends Event {
 	/**
 	 * 
 	 */
-	public CollisionEvent(Collidable object1, Collidable object2) {
+	public CollisionEvent(Object source, Collidable object1, Collidable object2) {
+		super(source);
 		this.object1 = object1;
 		this.object2 = object2;
 	}
