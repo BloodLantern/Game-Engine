@@ -1,5 +1,8 @@
 package com.bloodLantern.physics;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.bloodLantern.renderer.Renderer;
 import com.bloodLantern.renderer.renderables.Renderable2D;
 
@@ -8,7 +11,7 @@ import com.bloodLantern.renderer.renderables.Renderable2D;
  * 
  * @author BloodLantern
  */
-public class ComputePhysics implements Runnable {
+public class ComputePhysics {
 
 	/**
 	 * Whether an instance of this class has been created yet.
@@ -29,33 +32,36 @@ public class ComputePhysics implements Runnable {
 		else
 			created = true;
 		this.renderer = renderer;
+		start();
 	}
-
-	/**
-	 * All physics calculations must be made through this method.
-	 * 
-	 * @Override
-	 */
-	@Override
-	public void run() {
-		while (true) {
-			try {
+	
+	private void start() {
+		new Timer().scheduleAtFixedRate(new TimerTask() {
+			/**
+			 * All physics calculations must be made through this method.
+			 * 
+			 * @Override
+			 */
+			@Override
+			public void run() {
 				try {
-					synchronized (this) {
-						wait(Physics2D.UPDATE_RATE);
+					try {
+						synchronized (this) {
+							wait(Physics2D.UPDATE_RATE);
+						}
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
-				} catch (InterruptedException e) {
+					// Calculates momentum for each Physic object
+					for (Renderable2D c : renderer.getRendering())
+						if (c instanceof Physic2D)
+							Physics2D.calcMomentum((Physic2D) c, renderer);
+				} catch (Exception e) {
+					System.err.println("Exception in physic update loop.");
 					e.printStackTrace();
 				}
-				// Calculates momentum for each Physic object
-				for (Renderable2D c : renderer.getRendering())
-					if (c instanceof Physic2D)
-						Physics2D.calcMomentum((Physic2D) c, renderer);
-			} catch (Exception e) {
-				System.err.println("Exception in physic update loop.");
-				e.printStackTrace();
 			}
-		}
+		}, 0, Physics2D.UPDATE_RATE);
 	}
 
 }

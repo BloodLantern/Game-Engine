@@ -17,5 +17,15 @@ public abstract class Event extends EventObject implements Cloneable {
 	public Event(Object source) {
 		super(source);
 	}
+	
+	@Override
+	public Object clone() {
+		return this;
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString();
+	}
 
 }

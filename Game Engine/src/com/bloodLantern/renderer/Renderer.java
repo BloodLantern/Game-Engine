@@ -34,7 +34,7 @@ public class Renderer {
 	 * The default screen refresh rate. Used if and only if {@link #frameRate} is
 	 * still equal to -1 at runtime.
 	 */
-	public static final int FRAME_RATE_DEFAULT = Math.round(1000 / 60);
+	public static final int FRAME_RATE_DEFAULT = 60;
 
 	/**
 	 * The refresh rate of the current screen. Use {@link #FRAME_RATE_DEFAULT}
@@ -63,6 +63,11 @@ public class Renderer {
 	 * Last frame time (in milliseconds).
 	 */
 	private long lastFrameTime = -1;
+	
+	/**
+	 * The time between the last render refresh and this one.
+	 */
+	private int deltaTime;
 
 	/**
 	 * Scene used to render everything.
@@ -87,6 +92,8 @@ public class Renderer {
 	public Renderer() {
 		if (firstRenderer == null)
 			firstRenderer = this;
+		else
+			throw new IllegalArgumentException("The Renderer class may only be instantiated one time.");
 		if (scene == null)
 			try {
 				synchronized (this) {
@@ -101,7 +108,8 @@ public class Renderer {
 			public void handle(ActionEvent event) {
 				try {
 					root.getChildren().clear();
-					// Update last frame time
+					// Update delta time as well as last frame time
+					System.out.println(deltaTime = (int) (System.currentTimeMillis() - lastFrameTime));
 					lastFrameTime = System.currentTimeMillis();
 					// Actions to execute each frame with the GUI.
 					ImageView iView = null;
@@ -340,6 +348,22 @@ public class Renderer {
 	}
 
 	/**
+	 * @Override
+	 */
+	@Override
+	public String toString() {
+		String result = "";
+		if (firstRenderer.equals(this))
+			result += "First ";
+		result += "Renderer -> currently rendering:";
+		for (Renderable2D r : rendering)
+			result += "\n\t- " + r;
+		if (rendering.size() == 0)
+			result += " Nothing.";
+		return result;
+	}
+
+	/**
 	 * Renders this Animation as this Renderer's background. <strong>Not currently
 	 * implemented.</strong>
 	 * 
@@ -359,7 +383,7 @@ public class Renderer {
 	}
 
 	/**
-	 * @return the frame rate of this screen: {@link #frameRate} If it couldn't find
+	 * @return the frame rate of this screen: {@link #frameRate}. If it couldn't find
 	 *         it, returns {@link #FRAME_RATE_DEFAULT} instead.
 	 */
 	public static final int getFrameRate() {
@@ -384,19 +408,10 @@ public class Renderer {
 	}
 
 	/**
-	 * @Override
+	 * @return the deltaTime
 	 */
-	@Override
-	public String toString() {
-		String result = "";
-		if (firstRenderer.equals(this))
-			result += "First ";
-		result += "Renderer -> currently rendering:";
-		for (Renderable2D r : rendering)
-			result += "\n\t- " + r;
-		if (rendering.size() == 0)
-			result += " Nothing.";
-		return result;
+	public final int getDeltaTime() {
+		return deltaTime;
 	}
 
 }

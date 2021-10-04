@@ -12,10 +12,10 @@ import javafx.stage.Stage;
  */
 public class JavaFXApp extends Application {
 
-	public static final double WIDTH = 800;
-	public static final double HEIGHT = 600;
-	public static final String FRAME_TITLE = "Game Engine Tests";
-
+	public static double width = 800;
+	public static double height = 600;
+	public static String title = "Game Engine";
+	
 	/**
 	 * Method called when the {@code launch(String)} method is called. It is the
 	 * starting point of a JavaFX program.
@@ -28,7 +28,7 @@ public class JavaFXApp extends Application {
 		while (Renderer.firstRenderer == null) {
 		}
 		// Creating a new Scene with the Renderer's root Node
-		Scene scene = new Scene(Renderer.firstRenderer.getRootNode(), WIDTH, HEIGHT);
+		Scene scene = new Scene(Renderer.firstRenderer.getRootNode(), width, height);
 		// Setting the new Scene to the Renderer
 		Renderer.firstRenderer.setScene(scene);
 		// Awaking the main Thread
@@ -36,7 +36,7 @@ public class JavaFXApp extends Application {
 			Renderer.firstRenderer.notify();
 		}
 
-		stage.setTitle(FRAME_TITLE);
+		stage.setTitle(title);
 		stage.setScene(scene);
 		stage.show();
 	}

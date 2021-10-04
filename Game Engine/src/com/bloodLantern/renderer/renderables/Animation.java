@@ -26,6 +26,11 @@ public class Animation implements Renderable2D {
 		this.disabledTexture = disabledTexture;
 		textures = new Texture[length];
 	}
+	
+	public Animation(int length) {
+		textures = new Texture[length];
+		disabledTexture = textures[0];
+	}
 
 	/**
 	 * @return the textures
