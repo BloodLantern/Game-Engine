@@ -8,7 +8,7 @@ import com.bloodLantern.positionables.Positionable2D;
  * 
  * @author BloodLantern
  */
-public interface Physic2D extends Positionable2D {
+public interface Apply2DPhysics extends Positionable2D {
 
 	/**
 	 * Adds momentum to this Physic2D object.

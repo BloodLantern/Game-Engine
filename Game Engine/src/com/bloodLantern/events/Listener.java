@@ -5,6 +5,12 @@ package com.bloodLantern.events;
  * 
  * @author BloodLantern
  */
+@FunctionalInterface
 public interface Listener extends java.util.EventListener {
+	/**
+	 * Action to execute when an Event is raised.
+	 * 
+	 * @param event the raised Event.
+	 */
 	public void eventOccured(Event event);
 }

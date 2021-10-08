@@ -17,7 +17,7 @@ public class ComputePhysics {
 	 * Whether an instance of this class has been created yet.
 	 */
 	private static boolean created = false;
-	
+
 	/**
 	 * The Renderer attached to the instance.
 	 */
@@ -34,7 +34,7 @@ public class ComputePhysics {
 		this.renderer = renderer;
 		start();
 	}
-	
+
 	private void start() {
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			/**
@@ -45,23 +45,16 @@ public class ComputePhysics {
 			@Override
 			public void run() {
 				try {
-					try {
-						synchronized (this) {
-							wait(Physics2D.UPDATE_RATE);
-						}
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
 					// Calculates momentum for each Physic object
 					for (Renderable2D c : renderer.getRendering())
-						if (c instanceof Physic2D)
-							Physics2D.calcMomentum((Physic2D) c, renderer);
+						if (c instanceof Apply2DPhysics)
+							Physics2D.calcMomentum((Apply2DPhysics) c, renderer);
 				} catch (Exception e) {
 					System.err.println("Exception in physic update loop.");
 					e.printStackTrace();
 				}
 			}
-		}, 0, Physics2D.UPDATE_RATE);
+		}, 0, 1000 / Renderer.getFrameRate());
 	}
 
 }

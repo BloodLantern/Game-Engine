@@ -15,16 +15,12 @@ import com.bloodLantern.renderer.renderables.Renderable2D;
  * @author cc_hunter_boy
  */
 public final class Physics2D {
-	
-	/**
-	 * The time between each physic update.
-	 */
-	public static final int UPDATE_RATE = 1000 / 20;
 
 	/**
 	 * G constant in p/s2. Increasing this value will cause objects to fall faster.
 	 */
 	private static final double GRAVITY = 490;
+	
 	/**
 	 * Constant in kg/p3. Increasing this value will cause objects to lose their speed faster.
 	 */
@@ -37,9 +33,9 @@ public final class Physics2D {
 	}
 
 	/**
-	 * This method is used to calculate the momentum of a {@link Physic2D} object.
+	 * This method is used to calculate the momentum of a {@link Apply2DPhysics} object.
 	 */
-	public static void calcMomentum(Physic2D object, Renderer renderer) {
+	public static void calcMomentum(Apply2DPhysics object, Renderer renderer) {
 
 		object.setX(object.getVX() / Renderer.getFrameRate() + object.getX());
 		object.setY(object.getVY() / Renderer.getFrameRate() + object.getY());
@@ -66,16 +62,16 @@ public final class Physics2D {
 	 * @return a List of Physic2D object colliding with this object
 	 */
 	@Nullable
-	private static ArrayList<Physic2D> collisionCheck(@NotNull Physic2D object, @NotNull Renderer renderer) {
-		ArrayList<Physic2D> list = new ArrayList<Physic2D>();
+	private static ArrayList<Apply2DPhysics> collisionCheck(@NotNull Apply2DPhysics object, @NotNull Renderer renderer) {
+		ArrayList<Apply2DPhysics> list = new ArrayList<Apply2DPhysics>();
 		for (Renderable2D r : renderer.getRendering())
-			if (r instanceof Physic2D) {
+			if (r instanceof Apply2DPhysics) {
 				// If the checked object is equal to the one we check then continue loop
 				if (r.equals(object))
 					continue;
 
 				// Get variables
-				Physic2D other = (Physic2D) r;
+				Apply2DPhysics other = (Apply2DPhysics) r;
 				CollisionBox otherBox = other.getCollisionBox();
 				CollisionBox objectBox = object.getCollisionBox();
 				// Big check for collision
@@ -98,8 +94,8 @@ public final class Physics2D {
 	 * @param object   the object to check
 	 * @param renderer the Renderer containing the object
 	 */
-	public static void calcCollisions(Physic2D object, Renderer renderer) {
-		ArrayList<Physic2D> list = collisionCheck(object, renderer);
+	public static void calcCollisions(Apply2DPhysics object, Renderer renderer) {
+		ArrayList<Apply2DPhysics> list = collisionCheck(object, renderer);
 		// If the list isn't empty then it hit something
 		if (list.size() != 0) {
 			CollisionBox objectCb = object.getCollisionBox();
@@ -111,7 +107,7 @@ public final class Physics2D {
 			double objectVY = object.getVY();
 
 			// Check to find what side have been hit
-			for (Physic2D other : list) {
+			for (Apply2DPhysics other : list) {
 				CollisionBox otherCb = other.getCollisionBox();
 				otherCenterX = other.getX() + (otherCb.getX() + otherCb.getWidth()) / 2;
 				otherCenterY = other.getY() + (otherCb.getY() + otherCb.getHeight()) / 2;

@@ -63,7 +63,7 @@ public class Renderer {
 	 * Last frame time (in milliseconds).
 	 */
 	private long lastFrameTime = -1;
-	
+
 	/**
 	 * The time between the last render refresh and this one.
 	 */
@@ -103,39 +103,40 @@ public class Renderer {
 				e.printStackTrace();
 			}
 		// Creating a repeating GUI Task
-		Timeline repeatingGuiTask = new Timeline(new KeyFrame(Duration.millis(1000.0 / getFrameRate()), new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				try {
-					root.getChildren().clear();
-					// Update delta time as well as last frame time
-					System.out.println(deltaTime = (int) (System.currentTimeMillis() - lastFrameTime));
-					lastFrameTime = System.currentTimeMillis();
-					// Actions to execute each frame with the GUI.
-					ImageView iView = null;
-					// Sets the background
-					if (background != null) {
-						iView = new ImageView(background.getTexture().getImage());
-						iView.setX(0);
-						iView.setY(0);
-						iView.setFitHeight(scene.getHeight());
-						iView.setFitWidth(scene.getWidth());
-						iView.setViewOrder(10);
-						root.getChildren().add(iView);
+		Timeline repeatingGuiTask = new Timeline(
+				new KeyFrame(Duration.millis(1000.0 / getFrameRate()), new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						try {
+							root.getChildren().clear();
+							// Update delta time as well as last frame time
+							deltaTime = (int) (System.currentTimeMillis() - lastFrameTime);
+							lastFrameTime = System.currentTimeMillis();
+							// Actions to execute each frame with the GUI.
+							ImageView iView = null;
+							// Sets the background
+							if (background != null) {
+								iView = new ImageView(background.getTexture().getImage());
+								iView.setX(0);
+								iView.setY(0);
+								iView.setFitHeight(scene.getHeight());
+								iView.setFitWidth(scene.getWidth());
+								iView.setViewOrder(10);
+								root.getChildren().add(iView);
+							}
+							// Renders the Renderable2D objects stored in the rendering list
+							for (Renderable2D r : rendering) {
+								iView = new ImageView(r.getTexture().getImage());
+								iView.setX(r.getX());
+								iView.setY(r.getY());
+								root.getChildren().add(iView);
+							}
+						} catch (Exception e) {
+							System.err.println("Exception in render update loop.");
+							e.printStackTrace();
+						}
 					}
-					// Renders the Renderable2D objects stored in the rendering list
-					for (Renderable2D r : rendering) {
-						iView = new ImageView(r.getTexture().getImage());
-						iView.setX(r.getX());
-						iView.setY(r.getY());
-						root.getChildren().add(iView);
-					}
-				} catch (Exception e) {
-					System.err.println("Exception in render update loop.");
-					e.printStackTrace();
-				}
-			}
-		}));
+				}));
 		// Setting its cycle count as indefinite: it will loop until the JavaFXApp's
 		// stop() method has been called.
 		repeatingGuiTask.setCycleCount(Timeline.INDEFINITE);
@@ -383,8 +384,8 @@ public class Renderer {
 	}
 
 	/**
-	 * @return the frame rate of this screen: {@link #frameRate}. If it couldn't find
-	 *         it, returns {@link #FRAME_RATE_DEFAULT} instead.
+	 * @return the frame rate of this screen: {@link #frameRate}. If it couldn't
+	 *         find it, returns {@link #FRAME_RATE_DEFAULT} instead.
 	 */
 	public static final int getFrameRate() {
 		return frameRate != -1 ? frameRate : FRAME_RATE_DEFAULT;

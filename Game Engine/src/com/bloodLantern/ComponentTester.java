@@ -2,12 +2,12 @@ package com.bloodLantern;
 
 import com.bloodLantern.annotations.NotNull;
 import com.bloodLantern.annotations.Nullable;
-import com.bloodLantern.physics.Physic2D;
+import com.bloodLantern.physics.Apply2DPhysics;
 import com.bloodLantern.physics.collisions.CollisionBox;
 import com.bloodLantern.renderer.renderables.Renderable2D;
 import com.bloodLantern.renderer.renderables.Texture;
 
-public class ComponentTester implements Physic2D, Renderable2D {
+public class ComponentTester implements Apply2DPhysics, Renderable2D {
 
 	private final Texture texture;
 	private int roundedX = 0;
