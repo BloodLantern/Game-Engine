@@ -17,12 +17,17 @@ public abstract class Event extends EventObject implements Cloneable {
 	public Event(Object source) {
 		super(source);
 	}
-	
+
 	@Override
-	public Object clone() {
-		return this;
+	public Event clone() {
+		try {
+			return (Event) super.clone();
+		} catch (CloneNotSupportedException e) {
+			// This class does implement the Cloneable interface. This shouldn't happen
+			throw new RuntimeException("Can't clone Event.");
+		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return super.toString();

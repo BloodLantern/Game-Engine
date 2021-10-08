@@ -12,6 +12,8 @@ import javafx.application.Application;
  * @author BloodLantern
  */
 public final class GameEngine {
+	
+	private static boolean running = false;
 
 	/**
 	 * The Renderer created by calling {@link #setup(String[], String, int, int) the
@@ -54,6 +56,8 @@ public final class GameEngine {
 				Application.launch(JavaFXApp.class, javaFXArgs);
 			}
 		}.start();
+		
+		setRunning(true);
 
 		renderer = new Renderer();
 		computePhysics = new ComputePhysics(renderer);
@@ -74,6 +78,20 @@ public final class GameEngine {
 	 */
 	public static final ComputePhysics getComputePhysics() {
 		return computePhysics;
+	}
+
+	/**
+	 * @return the running
+	 */
+	public static boolean isRunning() {
+		return running;
+	}
+
+	/**
+	 * @param running the running to set
+	 */
+	public static void setRunning(boolean running) {
+		GameEngine.running = running;
 	}
 
 }

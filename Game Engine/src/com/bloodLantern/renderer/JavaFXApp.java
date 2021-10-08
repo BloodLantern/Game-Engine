@@ -1,8 +1,12 @@
 package com.bloodLantern.renderer;
 
+import com.bloodLantern.main.GameEngine;
+
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * Class inheriting from the {@link Application} class. It is used to set up
@@ -36,6 +40,18 @@ public class JavaFXApp extends Application {
 			Renderer.firstRenderer.notify();
 		}
 
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			/**
+			 * Called when closing the stage (window).
+			 * 
+			 * @Override
+			 */
+			@Override
+			public void handle(WindowEvent event) {
+				if (!event.isConsumed())
+					GameEngine.setRunning(false);
+			}
+		});
 		stage.setTitle(title);
 		stage.setScene(scene);
 		stage.show();

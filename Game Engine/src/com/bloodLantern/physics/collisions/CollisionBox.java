@@ -3,14 +3,15 @@ package com.bloodLantern.physics.collisions;
 import com.bloodLantern.renderer.renderables.Texture;
 
 /**
- * Represents a colliding object.
+ * Basic {@link DefaultCollidable} implementation for a square hitbox.
  * 
  * @author BloodLantern
  */
-public class CollisionBox extends Collidable {
+public class CollisionBox extends DefaultCollidable implements Triggerable {
 	
 	private double width;
 	private double height;
+	private boolean trigger;
 
 	/**
 	 * @param x
@@ -67,6 +68,26 @@ public class CollisionBox extends Collidable {
 	 */
 	public void setHeight(double height) {
 		this.height = height;
+	}
+
+	/**
+	 * Getter for the trigger value.
+	 * 
+	 * @return The trigger to get.
+	 */
+	@Override
+	public boolean isTrigger() {
+		return trigger;
+	}
+
+	/**
+	 * Setter for the trigger value.
+	 * 
+	 * @param trigger The trigger to set.
+	 */
+	@Override
+	public void setTrigger(boolean trigger) {
+		this.trigger = trigger;
 	}
 
 }

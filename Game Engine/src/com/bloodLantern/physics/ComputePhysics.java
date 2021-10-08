@@ -3,6 +3,7 @@ package com.bloodLantern.physics;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.bloodLantern.main.GameEngine;
 import com.bloodLantern.renderer.Renderer;
 import com.bloodLantern.renderer.renderables.Renderable2D;
 
@@ -44,6 +45,8 @@ public class ComputePhysics {
 			 */
 			@Override
 			public void run() {
+				if (!GameEngine.isRunning())
+					cancel();
 				try {
 					// Calculates momentum for each Physic object
 					for (Renderable2D c : renderer.getRendering())
