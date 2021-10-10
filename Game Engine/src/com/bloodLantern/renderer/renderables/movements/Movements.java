@@ -1,10 +1,20 @@
 package com.bloodLantern.renderer.renderables.movements;
 
-import penner.easing.*;
+import penner.easing.Back;
+import penner.easing.Bounce;
+import penner.easing.Circ;
+import penner.easing.Cubic;
+import penner.easing.Elastic;
+import penner.easing.Expo;
+import penner.easing.Linear;
+import penner.easing.Quad;
+import penner.easing.Quart;
+import penner.easing.Quint;
+import penner.easing.Sine;
 
 /**
  * Enum containing different movement types.
- * 
+ *
  * @author BloodLantern
  */
 public enum Movements {
@@ -26,12 +36,12 @@ public enum Movements {
 	BOUNCE(Bounce.class),
 
 	/**
-	 * 
+	 *
 	 */
 	CIRC(Circ.class),
 
 	/**
-	 * 
+	 *
 	 */
 	CUBIC(Cubic.class),
 
@@ -46,32 +56,32 @@ public enum Movements {
 	EXPO(Expo.class),
 
 	/**
-	 * 
+	 *
 	 */
 	LINEAR(Linear.class),
 
 	/**
-	 * 
+	 *
 	 */
 	QUAD(Quad.class),
 
 	/**
-	 * 
+	 *
 	 */
 	QUART(Quart.class),
 
 	/**
-	 * 
+	 *
 	 */
 	QUINT(Quint.class),
 
 	/**
-	 * 
+	 *
 	 */
 	SINE(Sine.class);
-	
+
 	private final Class<?> clazz;
-	
+
 	Movements(Class<?> clazz) {
 		this.clazz = clazz;
 	}
@@ -79,7 +89,7 @@ public enum Movements {
 	/**
 	 * Used to get an array of Class objects with every single penner.easing package
 	 * classes.
-	 * 
+	 *
 	 * @return a Class object array with every penner.easing classes.
 	 */
 	public Class<?>[] getMovementClasses() {
@@ -110,9 +120,9 @@ public enum Movements {
 		 * Acceleration AND deceleration.
 		 */
 		IN_OUT("easeInOut");
-		
+
 		private final String methodName;
-		
+
 		Types(String methodName) {
 			this.methodName = methodName;
 		}

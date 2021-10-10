@@ -3,6 +3,7 @@ package com.bloodLantern;
 import com.bloodLantern.annotations.NotNull;
 import com.bloodLantern.annotations.Nullable;
 import com.bloodLantern.physics.Apply2DPhysics;
+import com.bloodLantern.physics.collisions.Collidable;
 import com.bloodLantern.physics.collisions.CollisionBox;
 import com.bloodLantern.renderer.renderables.Renderable2D;
 import com.bloodLantern.renderer.renderables.Texture;
@@ -89,7 +90,7 @@ public class ComponentTester implements Apply2DPhysics, Renderable2D {
 	/**
 	 * Returns a String representation of this object as this one:
 	 * {@code ComponentTester - x, y, texture.getName()}
-	 * 
+	 *
 	 * @Override
 	 */
 	@Override
@@ -276,7 +277,7 @@ public class ComponentTester implements Apply2DPhysics, Renderable2D {
 	 * @Override
 	 */
 	@Override
-	public CollisionBox getCollisionBox() {
+	public Collidable getCollisionBox() {
 		return collisionBox;
 	}
 

@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 /**
  * A Texture object represents an image for a
  * {@link com.bloodLantern.renderer.renderables.Renderable2D Renderable object}.
- * 
+ *
  * @author BloodLantern
  */
 public class Texture implements Renderable2D {
@@ -62,10 +62,10 @@ public class Texture implements Renderable2D {
 	public Image getImage() {
 		return image;
 	}
-	
+
 	/**
 	 * Getter for the image's height.
-	 * 
+	 *
 	 * @return the image's height
 	 */
 	public double getHeight() {
@@ -74,7 +74,7 @@ public class Texture implements Renderable2D {
 
 	/**
 	 * Getter for the image's width.
-	 * 
+	 *
 	 * @return the image's width
 	 */
 	public double getWidth() {
@@ -131,7 +131,7 @@ public class Texture implements Renderable2D {
 
 	/**
 	 * Because it is already a Texture object, it returns itself.
-	 * 
+	 *
 	 * @Override
 	 */
 	@Override

@@ -1,18 +1,17 @@
 package com.bloodLantern.main;
 
 import com.bloodLantern.physics.ComputePhysics;
-import com.bloodLantern.renderer.JavaFXApp;
 import com.bloodLantern.renderer.Renderer;
 
 import javafx.application.Application;
 
 /**
  * Class where the library user can get this engine's values.
- * 
+ *
  * @author BloodLantern
  */
 public final class GameEngine {
-	
+
 	private static boolean running = false;
 
 	/**
@@ -35,7 +34,7 @@ public final class GameEngine {
 
 	/**
 	 * Setups the Game Engine with default values.
-	 * 
+	 *
 	 * @param javaFXArgs  Additional String arguments for the JavaFX Application
 	 *                    implementation.
 	 * @param frameTitle  The title of the frame (window).
@@ -56,7 +55,7 @@ public final class GameEngine {
 				Application.launch(JavaFXApp.class, javaFXArgs);
 			}
 		}.start();
-		
+
 		setRunning(true);
 
 		renderer = new Renderer();

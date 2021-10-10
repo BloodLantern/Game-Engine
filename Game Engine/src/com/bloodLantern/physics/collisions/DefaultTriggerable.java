@@ -3,7 +3,7 @@ package com.bloodLantern.physics.collisions;
 /**
  * Default implementation of the Triggerable interface. Note that it extends
  * DefaultCollidable.
- * 
+ *
  * @author BloodLantern
  */
 public class DefaultTriggerable extends DefaultCollidable implements Triggerable {
@@ -19,7 +19,7 @@ public class DefaultTriggerable extends DefaultCollidable implements Triggerable
 	/**
 	 * Constructs a new DefaultTriggerable object with a boolean value for its
 	 * trigger field.
-	 * 
+	 *
 	 * @param trigger Whether or not this Collidable object should fire events
 	 *                instead of colliding.
 	 */
@@ -29,7 +29,7 @@ public class DefaultTriggerable extends DefaultCollidable implements Triggerable
 
 	/**
 	 * Getter for the trigger value.
-	 * 
+	 *
 	 * @return The trigger to get.
 	 */
 	@Override
@@ -39,7 +39,7 @@ public class DefaultTriggerable extends DefaultCollidable implements Triggerable
 
 	/**
 	 * Setter for the trigger value.
-	 * 
+	 *
 	 * @param trigger The trigger to set.
 	 */
 	@Override

@@ -6,10 +6,10 @@ import java.util.EventObject;
  * An Event is an object created when something happens. Methods annotated with
  * {@link EventListener} are called with the created object when their attached
  * Event is raised.
- * 
+ *
  * @author BloodLantern
  */
-public abstract class Event extends EventObject implements Cloneable {
+public class Event extends EventObject implements Cloneable {
 
 	/**
 	 * Default superclass constructor.
@@ -30,7 +30,7 @@ public abstract class Event extends EventObject implements Cloneable {
 
 	@Override
 	public String toString() {
-		return super.toString();
+		return "Event[" + source + "]";
 	}
 
 }

@@ -25,7 +25,7 @@ import javafx.util.Duration;
 /**
  * A Renderer is used to render {@link com.bloodLantern.renderer.renderables
  * Renderable objects}. It acts as a container for components.
- * 
+ *
  * @author BloodLantern
  */
 public class Renderer {
@@ -52,7 +52,7 @@ public class Renderer {
 	 * List containing every Renderable2D object currently rendered by this Renderer
 	 * object.
 	 */
-	private final ArrayList<Renderable2D> rendering = new ArrayList<Renderable2D>();
+	private final ArrayList<Renderable2D> rendering = new ArrayList<>();
 
 	/**
 	 * Background Renderable2D
@@ -139,7 +139,7 @@ public class Renderer {
 				}));
 		// Setting its cycle count as indefinite: it will loop until the JavaFXApp's
 		// stop() method has been called.
-		repeatingGuiTask.setCycleCount(Timeline.INDEFINITE);
+		repeatingGuiTask.setCycleCount(javafx.animation.Animation.INDEFINITE);
 		repeatingGuiTask.play();
 	}
 
@@ -147,11 +147,11 @@ public class Renderer {
 	 * Used to render a Renderable2D object at a specified location. Render is
 	 * actually adding the object to the {@code rendering} list. It will then be
 	 * rendered in the next frame.
-	 * 
+	 *
 	 * @param renderable2D the Component to render.
 	 * @param x            the x position where the Component should be rendered.
 	 * @param y            the y position where the Component should be rendered.
-	 * 
+	 *
 	 * @throws NullPointerException if the {@code renderable2D} argument is null.
 	 */
 	public void render(@NotNull Renderable2D renderable2D, int x, int y) throws NullPointerException {
@@ -165,7 +165,7 @@ public class Renderer {
 	 * Used to render a Renderable2D object at its rounded location. Render is
 	 * actually adding the object to the {@code rendering} list. It will then be
 	 * rendered in the next frame.
-	 * 
+	 *
 	 * @param renderable2D the object to render
 	 */
 	public void render(@NotNull Renderable2D renderable2D) {
@@ -174,7 +174,7 @@ public class Renderer {
 
 	/**
 	 * Force stop rendering a Component.
-	 * 
+	 *
 	 * @param renderable2D
 	 */
 	public void stopRender(@NotNull Renderable2D renderable2D) {
@@ -190,7 +190,7 @@ public class Renderer {
 	 * Used to move a {@link com.bloodLantern.renderer.renderables.Renderable2D
 	 * Renderable2D object} on a {@link com.bloodLantern.renderer.Renderer Renderer
 	 * object} with a movement's animation type.
-	 * 
+	 *
 	 * @param renderable2D the Renderable2D object to move.
 	 * @param xDistance    the X axis distance.
 	 * @param yDistance    the Y axis distance.
@@ -270,7 +270,7 @@ public class Renderer {
 					}
 				}
 
-			}, 0, getFrameRate());
+			}, 0, 1000 / getFrameRate());
 		// Other Movement types
 		else
 			timer.scheduleAtFixedRate(new TimerTask() {
@@ -282,13 +282,13 @@ public class Renderer {
 					}
 					try {
 						renderable2D
-								.setX((double) ((float) type.getClazz()
+								.setX(((float) type.getClazz()
 										.getMethod(inout.getMethodName(), float.class, float.class, float.class,
 												float.class)
 										.invoke(null, System.currentTimeMillis() - startTime, startingXPos, fXDistance,
 												fDuration)));
 						renderable2D
-								.setY((double) ((float) type.getClazz()
+								.setY(((float) type.getClazz()
 										.getMethod(inout.getMethodName(), float.class, float.class, float.class,
 												float.class)
 										.invoke(null, System.currentTimeMillis() - startTime, startingYPos, fYDistance,
@@ -300,7 +300,7 @@ public class Renderer {
 					}
 				}
 
-			}, 0, frameRate);
+			}, 0, 1000 / getFrameRate());
 	}
 
 	/**
@@ -313,12 +313,12 @@ public class Renderer {
 	 * Equal to:
 	 * <li>{@code move(component, xDistance, yDistance, time, null)}
 	 * <li>{@code move(component, xDistance, yDistance, time, Movements.NONE)}.
-	 * 
+	 *
 	 * @param renderable2D the Component object to move.
 	 * @param xDistance    the X axis distance.
 	 * @param yDistance    the Y axis distance.
 	 * @param time         the movement's duration.
-	 * 
+	 *
 	 * @see com.bloodLantern.renderer.Renderer#move(Renderable2D, int, int, long,
 	 *      Movements, Movements.Types) Full move method
 	 */
@@ -341,7 +341,7 @@ public class Renderer {
 
 	/**
 	 * Renders this Texture's Image as this Renderer's background.
-	 * 
+	 *
 	 * @param bg the Texture of the Image to set as background.
 	 */
 	public void setBackground(@NotNull Texture bg) {
@@ -367,7 +367,7 @@ public class Renderer {
 	/**
 	 * Renders this Animation as this Renderer's background. <strong>Not currently
 	 * implemented.</strong>
-	 * 
+	 *
 	 * @param bg the Animation to set as background.
 	 */
 	public void setBackground(@NotNull Animation bg) {
@@ -393,7 +393,7 @@ public class Renderer {
 
 	/**
 	 * Setter for the Scene of this Renderer.
-	 * 
+	 *
 	 * @param scene the scene to set
 	 */
 	public final void setScene(@NotNull Scene scene) {

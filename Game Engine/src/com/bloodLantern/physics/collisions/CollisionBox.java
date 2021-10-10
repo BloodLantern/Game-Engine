@@ -4,11 +4,11 @@ import com.bloodLantern.renderer.renderables.Texture;
 
 /**
  * Basic {@link DefaultCollidable} implementation for a square hitbox.
- * 
+ *
  * @author BloodLantern
  */
 public class CollisionBox extends DefaultCollidable implements Triggerable {
-	
+
 	private double width;
 	private double height;
 	private boolean trigger;
@@ -27,7 +27,7 @@ public class CollisionBox extends DefaultCollidable implements Triggerable {
 		this.height = height;
 		this.trigger = trigger;
 	}
-	
+
 	/**
 	 * @param x
 	 * @param y
@@ -70,9 +70,15 @@ public class CollisionBox extends DefaultCollidable implements Triggerable {
 		this.height = height;
 	}
 
+	@Override
+	public String toString() {
+		return "CollisionBox(" + x + ";" + y + ") of size(" + width + ";" + height + ")"
+				+ (trigger ? " Trigger" : " Not trigger");
+	}
+
 	/**
 	 * Getter for the trigger value.
-	 * 
+	 *
 	 * @return The trigger to get.
 	 */
 	@Override
@@ -82,7 +88,7 @@ public class CollisionBox extends DefaultCollidable implements Triggerable {
 
 	/**
 	 * Setter for the trigger value.
-	 * 
+	 *
 	 * @param trigger The trigger to set.
 	 */
 	@Override

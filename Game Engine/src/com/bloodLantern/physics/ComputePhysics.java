@@ -9,7 +9,7 @@ import com.bloodLantern.renderer.renderables.Renderable2D;
 
 /**
  * Class containing the physic update loop.
- * 
+ *
  * @author BloodLantern
  */
 public class ComputePhysics {
@@ -40,7 +40,7 @@ public class ComputePhysics {
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			/**
 			 * All physics calculations must be made through this method.
-			 * 
+			 *
 			 * @Override
 			 */
 			@Override

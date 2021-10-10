@@ -10,10 +10,10 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation used to declare a value as being nullable.
- * 
+ *
  * @author BloodLantern
  */
 @Retention(CLASS)
-@Target({FIELD, METHOD, PARAMETER})
+@Target({ FIELD, METHOD, PARAMETER })
 public @interface Nullable {
 }

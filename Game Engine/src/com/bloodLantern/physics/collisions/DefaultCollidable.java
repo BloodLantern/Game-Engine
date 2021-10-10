@@ -2,7 +2,7 @@ package com.bloodLantern.physics.collisions;
 
 /**
  * Basic {@link Collidable} implementation.
- * 
+ *
  * @author BloodLantern
  * @see com.bloodLantern.events The Event package
  */
@@ -23,10 +23,10 @@ public class DefaultCollidable implements Collidable {
 	 */
 	public DefaultCollidable() {
 	}
-	
+
 	/**
 	 * Constructs a new DefaultCollidable object with x and y coordinates.
-	 * 
+	 *
 	 * @param x The x coordinate.
 	 * @param y The y coordinate.
 	 */

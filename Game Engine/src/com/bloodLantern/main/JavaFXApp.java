@@ -1,6 +1,7 @@
-package com.bloodLantern.renderer;
+package com.bloodLantern.main;
 
-import com.bloodLantern.main.GameEngine;
+import com.bloodLantern.annotations.NotNull;
+import com.bloodLantern.renderer.Renderer;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -11,19 +12,20 @@ import javafx.stage.WindowEvent;
 /**
  * Class inheriting from the {@link Application} class. It is used to set up
  * everything for the JavaFX part of this Game Engine.
- * 
+ *
  * @author BloodLantern
  */
 public class JavaFXApp extends Application {
 
-	public static double width = 800;
-	public static double height = 600;
-	public static String title = "Game Engine";
-	
+	static double width = 800;
+	static double height = 600;
+	@NotNull
+	static String title = "Game Engine";
+
 	/**
 	 * Method called when the {@code launch(String)} method is called. It is the
 	 * starting point of a JavaFX program.
-	 * 
+	 *
 	 * @Override
 	 */
 	@Override
@@ -43,13 +45,15 @@ public class JavaFXApp extends Application {
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			/**
 			 * Called when closing the stage (window).
-			 * 
+			 *
 			 * @Override
 			 */
 			@Override
 			public void handle(WindowEvent event) {
-				if (!event.isConsumed())
-					GameEngine.setRunning(false);
+				if (event.isConsumed())
+					return;
+				GameEngine.setRunning(false);
+				System.exit(0);
 			}
 		});
 		stage.setTitle(title);

@@ -1,27 +1,26 @@
-package com.bloodLantern.events.collisions;
+package com.bloodLantern.events;
 
-import com.bloodLantern.events.Event;
 import com.bloodLantern.physics.collisions.Collidable;
 import com.bloodLantern.physics.collisions.DefaultCollidable;
 
 /**
  * A CollisionEvent is raised when a Collidable object collides with another
  * Collidable object. Keep in mind that if one is set to trigger, this Event
- * will not be raised but
- * {@link com.bloodLantern.events.collisions.triggered.TriggerEvent
+ * will not be raised but {@link com.bloodLantern.events.TriggerEvent
  * TriggerEvent} instead.
- * 
+ *
  * @author BloodLantern
  */
-public class CollisionEvent extends Event {
+public class CollisionEvent extends Event implements Cancellable {
 
-	protected final Collidable object1;
-	protected final Collidable object2;
+	private final Collidable object1;
+	private final Collidable object2;
+	private boolean cancelled = false;
 
 	/**
 	 * Constructs a new CollisionEvent. The parameter object1 is supposed to have
 	 * collided with object2.
-	 * 
+	 *
 	 * @param object1 The object that collided with the other.
 	 * @param object2 The object collided by the other.
 	 */
@@ -33,7 +32,7 @@ public class CollisionEvent extends Event {
 
 	/**
 	 * Getter for tht object that collided with the other.
-	 * 
+	 *
 	 * @return The object that collided with the other.
 	 */
 	public final Collidable getObject1() {
@@ -42,19 +41,44 @@ public class CollisionEvent extends Event {
 
 	/**
 	 * Getter for the object collided by the other.
-	 * 
+	 *
 	 * @return The object collided by the other.
 	 */
 	public final Collidable getObject2() {
 		return object2;
 	}
-	
+
 	/**
 	 * Basically creates a new CollisionEvent with 2 blank Collidable objects.
 	 */
 	@Override
 	public CollisionEvent clone() {
 		return new CollisionEvent(new DefaultCollidable(), new DefaultCollidable());
+	}
+
+	@Override
+	public String toString() {
+		return "CollisionEvent between " + object1 + " and " + object2;
+	}
+
+	/**
+	 * Getter for the cancelled value.
+	 *
+	 * @return The cancelled to get.
+	 */
+	@Override
+	public final boolean isCancelled() {
+		return cancelled;
+	}
+
+	/**
+	 * Setter for the cancelled value.
+	 *
+	 * @param cancelled The cancelled to set.
+	 */
+	@Override
+	public final void setCancelled(boolean cancelled) {
+		this.cancelled = cancelled;
 	}
 
 }

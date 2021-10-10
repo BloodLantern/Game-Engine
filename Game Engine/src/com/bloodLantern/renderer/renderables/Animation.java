@@ -2,13 +2,14 @@ package com.bloodLantern.renderer.renderables;
 
 /**
  * Basically an animation, a Texture array.
- * 
+ *
  * @author BloodLantern
  */
 public class Animation implements Renderable2D {
 
 	/**
-	 * The disbled texture is the one rendered when the animation is not running but still visible.
+	 * The disbled texture is the one rendered when the animation is not running but
+	 * still visible.
 	 */
 	private final Texture disabledTexture;
 	private final Texture[] textures;
@@ -19,14 +20,14 @@ public class Animation implements Renderable2D {
 
 	/**
 	 * Default constructor.
-	 * 
+	 *
 	 * @param length the animation length. The Texture count of this animation.
 	 */
 	public Animation(int length, Texture disabledTexture) {
 		this.disabledTexture = disabledTexture;
 		textures = new Texture[length];
 	}
-	
+
 	public Animation(int length) {
 		textures = new Texture[length];
 		disabledTexture = textures[0];
