@@ -1,6 +1,5 @@
 package com.bloodLantern;
 
-import com.bloodLantern.events.Listener;
 import com.bloodLantern.main.GameEngine;
 import com.bloodLantern.physics.collisions.CollisionBox;
 import com.bloodLantern.renderer.Texture;
@@ -11,7 +10,7 @@ import com.bloodLantern.renderer.Texture;
  *
  * @author BloodLantern, cc_hunter_boy
  */
-final class Tester implements Listener {
+final class Tester {
 
 	/**
 	 * First method to be called when the program launches.
