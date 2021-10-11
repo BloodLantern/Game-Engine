@@ -1,4 +1,4 @@
-package com.bloodLantern.renderer.renderables;
+package com.bloodLantern.renderer;
 
 /**
  * Basically an animation, a Texture array.

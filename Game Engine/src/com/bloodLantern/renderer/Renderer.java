@@ -8,10 +8,7 @@ import java.util.TimerTask;
 
 import com.bloodLantern.annotations.NotNull;
 import com.bloodLantern.annotations.Nullable;
-import com.bloodLantern.renderer.renderables.Animation;
-import com.bloodLantern.renderer.renderables.Renderable2D;
-import com.bloodLantern.renderer.renderables.Texture;
-import com.bloodLantern.renderer.renderables.movements.Movements;
+import com.bloodLantern.main.GameEngine;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -23,8 +20,8 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
 /**
- * A Renderer is used to render {@link com.bloodLantern.renderer.renderables
- * Renderable objects}. It acts as a container for components.
+ * A Renderer is used to render Renderable objects. It acts as a container for
+ * components.
  *
  * @author BloodLantern
  */
@@ -46,17 +43,20 @@ public class Renderer {
 	 * The first Renderer instance to be created is stored here. If null, no
 	 * Renderer has been created for now.
 	 */
+	@Nullable
 	public static Renderer firstRenderer = null;
 
 	/**
 	 * List containing every Renderable2D object currently rendered by this Renderer
 	 * object.
 	 */
+	@NotNull
 	private final ArrayList<Renderable2D> rendering = new ArrayList<>();
 
 	/**
 	 * Background Renderable2D
 	 */
+	@Nullable
 	private Renderable2D background = null;
 
 	/**
@@ -72,12 +72,21 @@ public class Renderer {
 	/**
 	 * Scene used to render everything.
 	 */
+	@Nullable
 	private Scene scene = null;
 
 	/**
 	 * Root node where every rendered components must be added.
+	 *
 	 */
+	@Nullable
 	private Group root = new Group();
+
+	/**
+	 * The task performed by the Renderer each frame.
+	 */
+	@Nullable
+	public static Timeline repeatingGuiTask = null;
 
 	static {
 		int refreshRate = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode()
@@ -103,10 +112,12 @@ public class Renderer {
 				e.printStackTrace();
 			}
 		// Creating a repeating GUI Task
-		Timeline repeatingGuiTask = new Timeline(
+		repeatingGuiTask = new Timeline(
 				new KeyFrame(Duration.millis(1000.0 / getFrameRate()), new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
+						if (!GameEngine.isRunning())
+							repeatingGuiTask.stop();
 						try {
 							root.getChildren().clear();
 							// Update delta time as well as last frame time
@@ -155,8 +166,7 @@ public class Renderer {
 	 * @throws NullPointerException if the {@code renderable2D} argument is null.
 	 */
 	public void render(@NotNull Renderable2D renderable2D, int x, int y) throws NullPointerException {
-		if (renderable2D == null)
-			throw new NullPointerException("Cannot render a null Renderable2D object!");
+		GameEngine.verifyNotNull("Cannot render a null Renderable2D object!", renderable2D);
 		if (!rendering.contains(renderable2D))
 			rendering.add(renderable2D);
 	}
@@ -177,7 +187,7 @@ public class Renderer {
 	 *
 	 * @param renderable2D
 	 */
-	public void stopRender(@NotNull Renderable2D renderable2D) {
+	public void stopRender(@Nullable Renderable2D renderable2D) {
 		// To prevent a ConcurrentModificationException
 		Renderable2D r2d = null;
 		for (Renderable2D r : rendering)
@@ -187,9 +197,9 @@ public class Renderer {
 	}
 
 	/**
-	 * Used to move a {@link com.bloodLantern.renderer.renderables.Renderable2D
-	 * Renderable2D object} on a {@link com.bloodLantern.renderer.Renderer Renderer
-	 * object} with a movement's animation type.
+	 * Used to move a {@link com.bloodLantern.renderer.Renderable2D Renderable2D
+	 * object} on a {@link com.bloodLantern.renderer.Renderer Renderer object} with
+	 * a movement's animation type.
 	 *
 	 * @param renderable2D the Renderable2D object to move.
 	 * @param xDistance    the X axis distance.
@@ -197,21 +207,22 @@ public class Renderer {
 	 * @param duration     the movement's duration (in milliseconds). Must be
 	 *                     positive. Use 0 for an instant movement.
 	 * @param moveType     the movement's animation type. Will be
-	 *                     {@link com.bloodLantern.renderer.renderables.movements.Movements#NONE
-	 *                     none} if null.
+	 *                     {@link com.bloodLantern.renderer.Movements#NONE none} if
+	 *                     null.
 	 * @param inOut        an alternate argument. Must be one of
-	 *                     {@link com.bloodLantern.renderer.renderables.movements.Movements.Types
-	 *                     Movement types}. Used to specify if a movement's
-	 *                     animation type should be used only when moving in or when
-	 *                     moving out or both. If type parameter is null or equal to
-	 *                     {@link com.bloodLantern.renderer.renderables.movements.Movements#NONE
-	 *                     none}, this will have not effect. If this argument is
-	 *                     null, it will be equal to
-	 *                     {@link com.bloodLantern.renderer.renderables.movements.Movements.Types#IN_OUT
+	 *                     {@link com.bloodLantern.renderer.Movements.Types Movement
+	 *                     types}. Used to specify if a movement's animation type
+	 *                     should be used only when moving in or when moving out or
+	 *                     both. If type parameter is null or equal to
+	 *                     {@link com.bloodLantern.renderer.Movements#NONE none},
+	 *                     this will have not effect. If this argument is null, it
+	 *                     will be equal to
+	 *                     {@link com.bloodLantern.renderer.Movements.Types#IN_OUT
 	 *                     in/out}.
 	 */
 	public void move(@NotNull Renderable2D renderable2D, int xDistance, int yDistance, long duration,
 			@Nullable Movements moveType, @Nullable Movements.Types inOut) {
+		GameEngine.verifyNotNull("Cannot move a null Renderable2D object!", renderable2D);
 		if (moveType == null)
 			moveType = Movements.NONE;
 		final Movements type = moveType;
@@ -250,6 +261,8 @@ public class Renderer {
 
 				@Override
 				public void run() {
+					if (!GameEngine.isRunning())
+						cancel();
 					synchronized (this) {
 						while (System.currentTimeMillis() - startTime < duration) {
 							// Wait
@@ -277,6 +290,8 @@ public class Renderer {
 
 				@Override
 				public void run() {
+					if (!GameEngine.isRunning())
+						cancel();
 					if (System.currentTimeMillis() - startTime > fDuration) {
 						cancel();
 					}
@@ -304,11 +319,10 @@ public class Renderer {
 	}
 
 	/**
-	 * Used to move a {@link com.bloodLantern.renderer.renderables.Renderable2D
-	 * Component object} on a {@link com.bloodLantern.renderer.Renderer Renderer
-	 * object} without movement's animation type
-	 * ({@link com.bloodLantern.renderer.renderables.movements.Movements Movements
-	 * enum's fields}).
+	 * Used to move a {@link com.bloodLantern.renderer.Renderable2D Component
+	 * object} on a {@link com.bloodLantern.renderer.Renderer Renderer object}
+	 * without movement's animation type ({@link com.bloodLantern.renderer.Movements
+	 * Movements enum's fields}).
 	 * <p>
 	 * Equal to:
 	 * <li>{@code move(component, xDistance, yDistance, time, null)}
@@ -326,25 +340,12 @@ public class Renderer {
 		move(renderable2D, xDistance, yDistance, time, Movements.NONE, null);
 	}
 
-	private void move(@NotNull Renderable2D renderable2D, int xDistance, int yDistance, int power) {
-		// X movement
-		if (xDistance > 0)
-			renderable2D.setRoundedX(renderable2D.getRoundedX() + power);
-		else if (xDistance < 0)
-			renderable2D.setRoundedX(renderable2D.getRoundedX() - power);
-		// Y movement
-		if (yDistance > 0)
-			renderable2D.setRoundedY(renderable2D.getRoundedY() + power);
-		else if (yDistance < 0)
-			renderable2D.setRoundedY(renderable2D.getRoundedY() - power);
-	}
-
 	/**
 	 * Renders this Texture's Image as this Renderer's background.
 	 *
 	 * @param bg the Texture of the Image to set as background.
 	 */
-	public void setBackground(@NotNull Texture bg) {
+	public void setBackground(@Nullable Texture bg) {
 		background = bg;
 	}
 
@@ -352,16 +353,15 @@ public class Renderer {
 	 * @Override
 	 */
 	@Override
+	@NotNull
 	public String toString() {
 		String result = "";
 		if (firstRenderer.equals(this))
 			result += "First ";
-		result += "Renderer -> currently rendering:";
+		result += "Renderer[";
 		for (Renderable2D r : rendering)
-			result += "\n\t- " + r;
-		if (rendering.size() == 0)
-			result += " Nothing.";
-		return result;
+			result += r;
+		return result + "]";
 	}
 
 	/**
@@ -370,7 +370,7 @@ public class Renderer {
 	 *
 	 * @param bg the Animation to set as background.
 	 */
-	public void setBackground(@NotNull Animation bg) {
+	public void setBackground(@Nullable Animation bg) {
 		// TODO Renderer animation background
 		background = bg;
 	}
@@ -397,6 +397,7 @@ public class Renderer {
 	 * @param scene the scene to set
 	 */
 	public final void setScene(@NotNull Scene scene) {
+		GameEngine.verifyNotNull(scene);
 		this.scene = scene;
 	}
 

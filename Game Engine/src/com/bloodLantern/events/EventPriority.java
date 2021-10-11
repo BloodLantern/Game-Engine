@@ -4,6 +4,8 @@ package com.bloodLantern.events;
  * Class defining common Event priorities. Although, these priorities does only
  * correspond to an integer value and because of that, you can use the integer
  * value of your choice for the Event priority.
+ * <p>
+ * You may extends this class to create another with more priority levels.
  *
  * @author BloodLantern
  */

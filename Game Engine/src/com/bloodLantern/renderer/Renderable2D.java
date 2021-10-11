@@ -1,4 +1,4 @@
-package com.bloodLantern.renderer.renderables;
+package com.bloodLantern.renderer;
 
 import com.bloodLantern.positionables.Positionable2D;
 

@@ -53,7 +53,14 @@ public class JavaFXApp extends Application {
 				if (event.isConsumed())
 					return;
 				GameEngine.setRunning(false);
-				System.exit(0);
+				new Thread(() -> {
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+					System.exit(0);
+				}).start();
 			}
 		});
 		stage.setTitle(title);

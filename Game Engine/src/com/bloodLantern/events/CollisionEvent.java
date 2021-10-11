@@ -1,5 +1,7 @@
 package com.bloodLantern.events;
 
+import com.bloodLantern.annotations.NotNull;
+import com.bloodLantern.main.GameEngine;
 import com.bloodLantern.physics.collisions.Collidable;
 import com.bloodLantern.physics.collisions.DefaultCollidable;
 
@@ -13,8 +15,22 @@ import com.bloodLantern.physics.collisions.DefaultCollidable;
  */
 public class CollisionEvent extends Event implements Cancellable {
 
+	/**
+	 * The object that collided with the other.
+	 */
+	@NotNull
 	private final Collidable object1;
+
+	/**
+	 * The object collided by the other.
+	 */
+	@NotNull
 	private final Collidable object2;
+
+	/**
+	 * Whether or not the Event has been cancelled. Implemented or sort of from
+	 * {@link Cancellable}.
+	 */
 	private boolean cancelled = false;
 
 	/**
@@ -24,8 +40,9 @@ public class CollisionEvent extends Event implements Cancellable {
 	 * @param object1 The object that collided with the other.
 	 * @param object2 The object collided by the other.
 	 */
-	public CollisionEvent(Collidable object1, Collidable object2) {
+	public CollisionEvent(@NotNull Collidable object1, @NotNull Collidable object2) {
 		super(object1);
+		GameEngine.verifyNotNull("Cannot create a CollisionEvent with a null Collidable object!", object2);
 		this.object1 = object1;
 		this.object2 = object2;
 	}
@@ -35,6 +52,7 @@ public class CollisionEvent extends Event implements Cancellable {
 	 *
 	 * @return The object that collided with the other.
 	 */
+	@NotNull
 	public final Collidable getObject1() {
 		return object1;
 	}
@@ -44,6 +62,7 @@ public class CollisionEvent extends Event implements Cancellable {
 	 *
 	 * @return The object collided by the other.
 	 */
+	@NotNull
 	public final Collidable getObject2() {
 		return object2;
 	}
@@ -52,11 +71,13 @@ public class CollisionEvent extends Event implements Cancellable {
 	 * Basically creates a new CollisionEvent with 2 blank Collidable objects.
 	 */
 	@Override
+	@NotNull
 	public CollisionEvent clone() {
 		return new CollisionEvent(new DefaultCollidable(), new DefaultCollidable());
 	}
 
 	@Override
+	@NotNull
 	public String toString() {
 		return "CollisionEvent between " + object1 + " and " + object2;
 	}

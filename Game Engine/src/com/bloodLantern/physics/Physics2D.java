@@ -8,8 +8,8 @@ import com.bloodLantern.events.EventManager;
 import com.bloodLantern.events.TriggerEvent;
 import com.bloodLantern.physics.collisions.CollisionBox;
 import com.bloodLantern.physics.collisions.Triggerable;
+import com.bloodLantern.renderer.Renderable2D;
 import com.bloodLantern.renderer.Renderer;
-import com.bloodLantern.renderer.renderables.Renderable2D;
 
 /**
  * Class containing useful static methods when working with Physics (Physic

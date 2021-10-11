@@ -1,4 +1,4 @@
-package com.bloodLantern.renderer.renderables.movements;
+package com.bloodLantern.renderer;
 
 import penner.easing.Back;
 import penner.easing.Bounce;

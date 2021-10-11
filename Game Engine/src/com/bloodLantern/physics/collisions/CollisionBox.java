@@ -1,6 +1,6 @@
 package com.bloodLantern.physics.collisions;
 
-import com.bloodLantern.renderer.renderables.Texture;
+import com.bloodLantern.renderer.Texture;
 
 /**
  * Basic {@link DefaultCollidable} implementation for a square hitbox.

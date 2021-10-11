@@ -4,8 +4,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.bloodLantern.main.GameEngine;
+import com.bloodLantern.renderer.Renderable2D;
 import com.bloodLantern.renderer.Renderer;
-import com.bloodLantern.renderer.renderables.Renderable2D;
 
 /**
  * Class containing the physic update loop.
@@ -33,10 +33,10 @@ public class ComputePhysics {
 		else
 			created = true;
 		this.renderer = renderer;
-		start();
+		begin();
 	}
 
-	private void start() {
+	private void begin() {
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			/**
 			 * All physics calculations must be made through this method.

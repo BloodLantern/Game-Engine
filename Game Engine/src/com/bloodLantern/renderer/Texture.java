@@ -1,4 +1,4 @@
-package com.bloodLantern.renderer.renderables;
+package com.bloodLantern.renderer;
 
 import com.bloodLantern.annotations.NotNull;
 
@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 
 /**
  * A Texture object represents an image for a
- * {@link com.bloodLantern.renderer.renderables.Renderable2D Renderable object}.
+ * {@link com.bloodLantern.renderer.Renderable2D Renderable object}.
  *
  * @author BloodLantern
  */

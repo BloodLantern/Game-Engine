@@ -21,7 +21,7 @@ public class EventTester implements Listener {
 	public EventTester() {
 		// Register this listener with the wanted Event
 		EventManager.addListener(this, CollisionEvent.class);
-		EventManager.addListener(this, TriggerEvent.class);
+		// EventManager.addListener(this, TriggerEvent.class);
 		EventManager.addListener(this, Event.class);
 	}
 
@@ -29,7 +29,6 @@ public class EventTester implements Listener {
 	public void onCollision(CollisionEvent event) {
 		System.out.println("CollisionEvent called!");
 		System.out.println(event.getObject1() + "\n" + event.getObject2());
-		event.setCancelled(true);
 	}
 
 	@EventListener

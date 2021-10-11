@@ -1,5 +1,6 @@
 package com.bloodLantern.main;
 
+import com.bloodLantern.annotations.NotNull;
 import com.bloodLantern.physics.ComputePhysics;
 import com.bloodLantern.renderer.Renderer;
 
@@ -60,6 +61,31 @@ public final class GameEngine {
 
 		renderer = new Renderer();
 		computePhysics = new ComputePhysics(renderer);
+	}
+
+	/**
+	 * Throws a NullPointerException for each null parameter.
+	 *
+	 * @param objects Objects to verify the non-nullity.
+	 */
+	public static void verifyNotNull(@NotNull Object... objects) {
+		for (Object o : objects)
+			if (o == null)
+				throw new NullPointerException("This method needs a non-null object!");
+	}
+
+	/**
+	 * Throws a NullPointerException for each null parameter with a custom message.
+	 *
+	 * @param message A custom message to use for the Exception thrown.
+	 * @param objects Objects to verify the non-nullity.
+	 */
+	public static void verifyNotNull(@NotNull String message, @NotNull Object... objects) {
+		if (message == null)
+			throw new NullPointerException("The custom message mustn't be null!");
+		for (Object o : objects)
+			if (o == null)
+				throw new NullPointerException(message);
 	}
 
 	/**

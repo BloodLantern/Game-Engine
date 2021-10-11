@@ -1,5 +1,7 @@
 package com.bloodLantern.events;
 
+import com.bloodLantern.annotations.NotNull;
+import com.bloodLantern.main.GameEngine;
 import com.bloodLantern.physics.collisions.Collidable;
 import com.bloodLantern.physics.collisions.DefaultCollidable;
 import com.bloodLantern.physics.collisions.DefaultTriggerable;
@@ -17,7 +19,16 @@ import com.bloodLantern.physics.collisions.Triggerable;
  */
 public class TriggerEvent extends Event {
 
+	/**
+	 * The object that triggered the other.
+	 */
+	@NotNull
 	private final Triggerable object1;
+
+	/**
+	 * The object triggered by the other.
+	 */
+	@NotNull
 	private final Collidable object2;
 
 	/**
@@ -29,18 +40,21 @@ public class TriggerEvent extends Event {
 	 * @param object1 The object that collided with the other.
 	 * @param object2 The object collided by the other.
 	 */
-	public TriggerEvent(Triggerable object1, Collidable object2) {
+	public TriggerEvent(@NotNull Triggerable object1, @NotNull Collidable object2) {
 		super(object1);
+		GameEngine.verifyNotNull("Cannot create a TriggerEvent with a null Collidable/Triggerable object!", object2);
 		this.object1 = object1;
 		this.object2 = object2;
 	}
 
 	@Override
+	@NotNull
 	public TriggerEvent clone() {
 		return new TriggerEvent(new DefaultTriggerable(), new DefaultCollidable());
 	}
 
 	@Override
+	@NotNull
 	public String toString() {
 		return "TriggerEvent between " + object1 + " and " + object2;
 	}
@@ -50,6 +64,7 @@ public class TriggerEvent extends Event {
 	 *
 	 * @return The object1 to get.
 	 */
+	@NotNull
 	public final Triggerable getObject1() {
 		return object1;
 	}
@@ -59,6 +74,7 @@ public class TriggerEvent extends Event {
 	 *
 	 * @return The object2 to get.
 	 */
+	@NotNull
 	public final Collidable getObject2() {
 		return object2;
 	}

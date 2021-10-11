@@ -5,8 +5,8 @@ import com.bloodLantern.annotations.Nullable;
 import com.bloodLantern.physics.Apply2DPhysics;
 import com.bloodLantern.physics.collisions.Collidable;
 import com.bloodLantern.physics.collisions.CollisionBox;
-import com.bloodLantern.renderer.renderables.Renderable2D;
-import com.bloodLantern.renderer.renderables.Texture;
+import com.bloodLantern.renderer.Renderable2D;
+import com.bloodLantern.renderer.Texture;
 
 public class ComponentTester implements Apply2DPhysics, Renderable2D {
 

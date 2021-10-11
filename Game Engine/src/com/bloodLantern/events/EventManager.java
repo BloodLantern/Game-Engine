@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 
 import com.bloodLantern.annotations.NotNull;
 import com.bloodLantern.annotations.Nullable;
+import com.bloodLantern.main.GameEngine;
 
 /**
  * Class used to manage Events. By 'managing', we mean registering listeners and
@@ -55,23 +56,31 @@ public final class EventManager {
 	 *         Cancellable and that it has been cancelled.
 	 */
 	public static boolean fireEvent(@NotNull Event event) {
-		if (event == null)
-			throw new NullPointerException("Cannot fire a null Event!");
+		GameEngine.verifyNotNull("Cannot fire a null Event!", event);
 		Map<Method, Object> methodList = new HashMap<>();
 		// Iterating over every registered Listener to find those that listen to the
 		// parameterized Event type
-		for (Entry<Listener, List<Class<? extends Event>>> entry : LISTENERS.entrySet())
+		for (Entry<Listener, List<Class<? extends Event>>> entry : LISTENERS.entrySet()) {
 			// If it found one then fire the event on this Listener
 			// TODO Invoke Event methods listeners when any Event is fired/raised.
-			if (entry.getValue().contains(event.getClass()))
+			Class<?> clazz = event.getClass();
+			while (entry.getValue().contains(clazz)) {
 				for (Method method : entry.getKey().getClass().getMethods())
 					if (method.isAnnotationPresent(EventListener.class))
 						if (method.canAccess(entry.getKey()))
 							if (method.getParameterCount() == 1)
 								if (method.getParameterTypes()[0].equals(event.getClass()))
 									methodList.put(method, entry.getKey());
+				clazz = clazz.getSuperclass();
+				if (clazz.equals(Object.class))
+					break;
+			}
+		}
+		// Get a List of these methods
 		List<Method> methods = new ArrayList<>(methodList.keySet());
+		// And sort them by priority
 		Collections.sort(methods, EVENT_LISTENER_COMPARATOR);
+		// Then invoke them
 		for (Method method : methods)
 			try {
 				method.invoke(methodList.get(method), event);
@@ -100,8 +109,8 @@ public final class EventManager {
 	@NotNull
 	public static Map<Listener, List<Class<? extends Event>>> addListener(@NotNull Listener listener,
 			@NotNull Class<? extends Event> eventType) {
-		if (listener == null || eventType == null)
-			throw new NullPointerException("Cannot add a null Listener or event type to the listeners list!");
+		GameEngine.verifyNotNull("Cannot add a null Listener or event type to the listeners list!", listener,
+				eventType);
 		if (!LISTENERS.containsKey(listener))
 			LISTENERS.put(listener, new ArrayList<Class<? extends Event>>());
 		if (!LISTENERS.get(listener).contains(eventType))
@@ -132,8 +141,7 @@ public final class EventManager {
 	@NotNull
 	public static Map<Listener, List<Class<? extends Event>>> removeEventType(
 			@NotNull Class<? extends Event> eventType) {
-		if (eventType == null)
-			throw new NullPointerException("Cannot remove a null EventType from the listeners list!");
+		GameEngine.verifyNotNull("Cannot remove a null EventType from the listeners list!", eventType);
 		for (Entry<Listener, List<Class<? extends Event>>> entry : LISTENERS.entrySet())
 			if (entry.getValue().contains(eventType))
 				entry.getValue().remove(eventType);

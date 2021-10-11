@@ -1,5 +1,5 @@
 /**
- * Renderererererer
+ * Renderer and renderables.
  *
  * @author BloodLantern
  */
