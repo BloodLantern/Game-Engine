@@ -107,16 +107,16 @@ public final class Physics2D {
 			CollisionBox objectCb = (CollisionBox) object.getCollisionBox();
 			double otherCenterX = 0;
 			double otherCenterY = 0;
-			double objectCenterX = object.getX() + (objectCb.getX() + objectCb.getWidth() / 2);
-			double objectCenterY = object.getY() + (objectCb.getY() + objectCb.getHeight() / 2);
+			double objectCenterX = object.getX() + objectCb.getX() + objectCb.getWidth() / 2;
+			double objectCenterY = object.getY() + objectCb.getY() + objectCb.getHeight() / 2;
 			double objectVX = object.getVX();
 			double objectVY = object.getVY();
 
 			// Check to find what side have been hit
 			for (Apply2DPhysics other : list) {
 				CollisionBox otherCb = (CollisionBox) other.getCollisionBox();
-				otherCenterX = other.getX() + (otherCb.getX() + otherCb.getWidth()) / 2;
-				otherCenterY = other.getY() + (otherCb.getY() + otherCb.getHeight()) / 2;
+				otherCenterX = other.getX() + otherCb.getX() + otherCb.getWidth() / 2;
+				otherCenterY = other.getY() + otherCb.getY() + otherCb.getHeight() / 2;
 				double otherVX = other.getVX();
 				double otherVY = other.getVY();
 

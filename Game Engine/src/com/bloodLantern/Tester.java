@@ -36,12 +36,12 @@ final class Tester {
 		GameEngine.getRenderer().render(renderable);
 		GameEngine.getRenderer().render(renderable2);
 		renderable.addSpeed(300, 0);
-		renderable2.addSpeed(-100, 0);
+		//renderable2.addSpeed(-100, 0);
 		
-		Audio audio = new Audio("ghost.mp3");
+		/*Audio audio = new Audio("ghost.mp3");
 		audio.getMediaPlayer().setVolume(0.02);
 		audio.getMediaPlayer().setOnReady(() -> {
 			audio.getMediaPlayer().play();
-		});
+		});*/
 	}
 }

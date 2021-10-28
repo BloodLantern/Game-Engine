@@ -21,7 +21,7 @@ public class EventTester implements Listener {
 	public EventTester() {
 		// Register this listener with the wanted Event
 		EventManager.addListener(this, CollisionEvent.class);
-		// EventManager.addListener(this, TriggerEvent.class);
+		EventManager.addListener(this, TriggerEvent.class);
 		EventManager.addListener(this, Event.class);
 	}
 
