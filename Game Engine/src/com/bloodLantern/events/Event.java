@@ -15,6 +15,11 @@ import com.bloodLantern.main.GameEngine;
 public class Event extends EventObject implements Cloneable {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2141821956609813785L;
+
+	/**
 	 * Default superclass constructor.
 	 */
 	public Event(@NotNull Object source) {

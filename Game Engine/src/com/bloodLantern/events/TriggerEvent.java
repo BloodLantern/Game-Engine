@@ -20,6 +20,11 @@ import com.bloodLantern.physics.collisions.Triggerable;
 public class TriggerEvent extends Event {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -382703208280633493L;
+
+	/**
 	 * The object that triggered the other.
 	 */
 	@NotNull

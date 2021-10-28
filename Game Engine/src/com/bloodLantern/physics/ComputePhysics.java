@@ -51,7 +51,7 @@ public class ComputePhysics {
 					// Calculates momentum for each Physic object
 					for (Renderable2D c : renderer.getRendering())
 						if (c instanceof Apply2DPhysics)
-							Physics2D.calcMomentum((Apply2DPhysics) c, renderer);
+							Physics2D.calcSpeed((Apply2DPhysics) c, renderer);
 				} catch (Exception e) {
 					System.err.println("Exception in physic update loop.");
 					e.printStackTrace();

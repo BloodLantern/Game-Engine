@@ -37,10 +37,10 @@ public final class Physics2D {
 	}
 
 	/**
-	 * This method is used to calculate the momentum of an {@link Apply2DPhysics}
+	 * This method is used to calculate the speed of an {@link Apply2DPhysics}
 	 * object.
 	 */
-	public static void calcMomentum(@NotNull Apply2DPhysics object, @NotNull Renderer renderer) {
+	public static void calcSpeed(@NotNull Apply2DPhysics object, @NotNull Renderer renderer) {
 
 		object.setX(object.getVX() / Renderer.getFrameRate() + object.getX());
 		object.setY(object.getVY() / Renderer.getFrameRate() + object.getY());
@@ -102,7 +102,7 @@ public final class Physics2D {
 	 */
 	public static void calcCollisions(@NotNull Apply2DPhysics object, @NotNull Renderer renderer) {
 		ArrayList<Apply2DPhysics> list = collisionCheck(object, renderer);
-		// If the list isn't empty then it hit something
+		// If the list isn't empty then it hits something
 		if (list.size() != 0) {
 			CollisionBox objectCb = (CollisionBox) object.getCollisionBox();
 			double otherCenterX = 0;

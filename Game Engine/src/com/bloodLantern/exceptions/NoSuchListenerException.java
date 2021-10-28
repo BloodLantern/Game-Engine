@@ -9,6 +9,11 @@ package com.bloodLantern.exceptions;
 public class NoSuchListenerException extends Exception {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2073285108726183950L;
+
+	/**
 	 * Constructs a new NoSuchListenerException.
 	 */
 	public NoSuchListenerException() {

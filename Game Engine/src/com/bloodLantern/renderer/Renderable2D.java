@@ -3,8 +3,8 @@ package com.bloodLantern.renderer;
 import com.bloodLantern.positionables.Positionable2D;
 
 /**
- * A class implementing this interface can be rendered by
- * {@link com.bloodLantern.renderer.Renderer this Game Engine's Renderer class}.
+ * A class implementing this interface can be rendered by a
+ * {@link com.bloodLantern.renderer.Renderer Renderer}.
  *
  * @author BloodLantern
  */

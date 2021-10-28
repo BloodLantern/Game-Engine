@@ -63,15 +63,13 @@ public final class EventManager {
 		for (Entry<Listener, List<Class<? extends Event>>> entry : LISTENERS.entrySet()) {
 			// If it found one then fire the event on this Listener
 			// TODO Invoke Event methods listeners when any Event is fired/raised.
-			Class<?> clazz = event.getClass();
-			while (entry.getValue().contains(clazz)) {
+			for (Class<?> clazz = event.getClass(); entry.getValue().contains(clazz); clazz = clazz.getSuperclass()) {
 				for (Method method : entry.getKey().getClass().getMethods())
 					if (method.isAnnotationPresent(EventListener.class))
 						if (method.canAccess(entry.getKey()))
 							if (method.getParameterCount() == 1)
 								if (method.getParameterTypes()[0].equals(event.getClass()))
 									methodList.put(method, entry.getKey());
-				clazz = clazz.getSuperclass();
 				if (clazz.equals(Object.class))
 					break;
 			}

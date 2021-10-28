@@ -1,5 +1,8 @@
 package com.bloodLantern.renderer;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import com.bloodLantern.annotations.NotNull;
 
 import javafx.scene.image.Image;
@@ -51,9 +54,11 @@ public class Texture implements Renderable2D {
 
 	/**
 	 * Default constructor.
+	 * 
+	 * @throws FileNotFoundException If the requested file path doesn't exists.
 	 */
-	public Texture(@NotNull String filePath) {
-		image = new Image(filePath);
+	public Texture(@NotNull String path) throws FileNotFoundException {
+		image = new Image(new FileInputStream(path));
 	}
 
 	/**

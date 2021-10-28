@@ -16,6 +16,11 @@ import com.bloodLantern.physics.collisions.DefaultCollidable;
 public class CollisionEvent extends Event implements Cancellable {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6862840906570015108L;
+
+	/**
 	 * The object that collided with the other.
 	 */
 	@NotNull

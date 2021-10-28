@@ -11,6 +11,53 @@ import com.bloodLantern.positionables.Positionable2D;
 public interface Apply2DPhysics extends Positionable2D {
 
 	/**
+	 * Default value for the affectedByGravity field.
+	 */
+	boolean AFFECTED_BY_GRAVITY_DEFAULT = true;
+
+	/**
+	 * Default value for the movable field.
+	 */
+	boolean MOVABLE_DEFAULT = true;
+
+	/**
+	 * Default value for the weight field.
+	 * <p>
+	 * In Kg.
+	 */
+	float WEIGHT_DEFAULT = 1.0f;
+
+	/**
+	 * Default value for the bounciness field.
+	 * <p>
+	 * Bounciness between 0 and 1.
+	 */
+	float BOUCINESS_DEFAULT = 0.5f;
+
+	/**
+	 * Default value for the friction field.
+	 * <p>
+	 * Friction between 0 and 1.
+	 */
+	float FRICTION_DEFAULT = 0.3f;
+
+	/**
+	 * Default value for the aerodynamismX field.
+	 * <p>
+	 * Aerodynamism is surface in p2 multiplied by a coefficient for the shape. (X
+	 * axis)
+	 */
+	float AERODYNAMISM_X_DEFAULT = 2500.0f;
+
+	/**
+	 * Default value for the aerodynamismY field.
+	 * <p>
+	 * Aerodynamism is surface in p2 multiplied by a coefficient for the shape. (Y
+	 * axis)
+	 */
+	float AERODYNAMISM_Y_DEFAULT = 2500.0f;
+
+	/**
 	 * Adds momentum to this Physic2D object.
 	 *
 	 * @param vX X axis speed to add
